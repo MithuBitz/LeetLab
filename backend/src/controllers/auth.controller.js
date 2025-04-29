@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import { UserRole } from "../generated/prisma/index.js";
-import { db } from "../lib/db.js";
+import { db } from "../libs/db.js";
 
 export const registerUser = async (req, res) => {
   // res.send("Register controller hit");
