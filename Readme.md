@@ -22,3 +22,12 @@
 - run a command `npx prisma generate` to generate the prisma client
 - and then run `npx prisma migrate dev` to migrate the database. and add a migration name
 - run `npx prisma db push` to push the database  
+
+### Step 4:
+- Implement the functionality of register user.
+- We need two library to implement the functionality of register user which are bcrypt and jsonwebtoken
+
+### Step 5:
+- Implement the login and logout functionality
+- Implement the auth middleware for logout
+- 

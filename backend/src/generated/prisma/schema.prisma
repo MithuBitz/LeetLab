@@ -10,6 +10,13 @@ enum UserRole {
   ADMIN
 }
 
+// Enum for Difficulty of a problem
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -30,4 +37,29 @@ model User {
   role      UserRole @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  problems Problem[]
+}
+
+model Problem {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  difficulty  Difficulty
+  tags        String[]
+  userId      String
+  examples    Json
+  constraints String
+  hints       String?
+  editorial   String?
+
+  testcases          Json // 
+  codeSnippets       Json
+  referenceSolutions Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //  Relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
