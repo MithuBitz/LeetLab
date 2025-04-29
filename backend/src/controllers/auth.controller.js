@@ -1,5 +1,91 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+import { UserRole } from "../generated/prisma/index.js";
+import { db } from "../lib/db.js";
+
 export const registerUser = async (req, res) => {
-  res.send("Register controller hit");
+  // res.send("Register controller hit");
+  // get the data from the body
+  const { email, password, name } = req.body;
+
+  //validation
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  }
+  try {
+    // check if the user already exists
+    const userExist = await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    // if exist return an response
+    if (userExist) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+    // Create a hash password to store indb
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // create the user
+    const newUser = await db.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+        role: UserRole.USER,
+      },
+    });
+
+    if (!newUser) {
+      return res.status(500).json({
+        message: "Something went wrong",
+        success: false,
+      });
+    }
+
+    // create the token
+    const token = jwt.sign(
+      {
+        id: newUser.id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRY,
+      }
+    );
+
+    // set the cookie
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    });
+
+    // return the response
+    return res.status(201).json({
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        role: newUser.role,
+        image: newUser.image,
+      },
+      message: "User created successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return res.status(500).json({
+      message: "Unable to register user",
+      success: false,
+    });
+  }
 };
 
 export const login = async (req, res) => {
