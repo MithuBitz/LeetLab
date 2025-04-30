@@ -48,3 +48,4 @@
 - in "checkAdmin" first we need to grab the user id from the req.user.id and hold it in a variable like userId. and then we need to find the user in database using userId and select the role of the user. Now if user is null or user.role is not "ADMIN" return a response with status code 403 and a message "Access Denied". else next()
 - now in catch part we need to return a response with status code 500 and a message "Something went wrong".
 - Now create a createProblem controller in the problem.controller.js file.
+- Also create and initialize a get all problems routes and a controller to get all problems, get problem by id with a controller, update problem by id route with authmidddleware, checkAdmin and a controller, delete problem by id route with authmidddleware, checkAdmin and a controller, a get solved problems route with authmiddleware and a controller getAllProblemSolvedByUser.
