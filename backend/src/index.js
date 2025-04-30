@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routers/auth.routes.js";
+import problemsRoutes from "./routers/problems.routes.js";
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ app.use(cookieParser());
 
 //Rotes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/problems", )
+app.use("/api/v1/problems", problemsRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

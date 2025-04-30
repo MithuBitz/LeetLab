@@ -44,4 +44,7 @@
 ## Step 7:
 
 - Create a problems route in index.js and also create a problems.routes.js file in routes directory
-- 
+- Now when we want to create a create problem route we need to first verify the user is admin or not because only admin can create a problem. So for this first call the auth middleware in "/create" route to get the user and then we need to create another middleware "checkAdmin" to verify the user is admin or not in a try/catch block.
+- in "checkAdmin" first we need to grab the user id from the req.user.id and hold it in a variable like userId. and then we need to find the user in database using userId and select the role of the user. Now if user is null or user.role is not "ADMIN" return a response with status code 403 and a message "Access Denied". else next()
+- now in catch part we need to return a response with status code 500 and a message "Something went wrong".
+- Now create a createProblem controller in the problem.controller.js file.
