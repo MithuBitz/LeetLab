@@ -28,8 +28,10 @@ export const createProblem = async (req, res) => {
 
       const submissionResult = await submitBatch(submission);
 
-      //Extract the token from the submissionResult
+      //Extract the token from the submissionResultcr
       const token = submissionResult.map((result) => result.token)
+
+     const result = await pollBatchResult(token);
     }
   } catch (error) {
     

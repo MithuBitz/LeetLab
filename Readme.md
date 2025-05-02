@@ -62,3 +62,14 @@
 - In the submitBatch async function we need to use the submission as a parameter inside the function. Now here we need a package called axios so install it with `npm i axios`. Now we need to import axios in the judge0.libs.js file. Now create a judge0 api url variable in .env where we need to specify the url of judge0 api. Which is in our case `http://localhost:2358/`. Then with help of axios create a post request to judge0 api with the submission parameter and extract or destructed the data from the response like `` const {data}= await axios.post(`${process.env.JUDGE0_API}/submissions/batch?base64_encoded=false` , submission) ``. Now we need to get or return the token/data from the response data. (Here data is an array of token)
 - We need to hit the judge0 endpoint with the submission two times. First we get the token in a array and this token helps judge0 to identify the code.
 - Now we need to map through the sumbitBatch result(token) and inside the map for each result we need to extract the token and hold it in a token variable.
+- Now we need to call a function pollBatchResult which take the token as a parameter and hold the function ruturn value in a result variable.
+- Now lets implement the pollBatchResult function inside the judge0.libs.js file which takes a token as a parameter. Inside the function run a while loop where first we need to hit a judge0 endpoint with help of axios.get like
+  ```
+  await axios.get(`${process.env.JUDGE0_API_URL}/submission/batch`,{ params: { tokens: tokens.join(","), base64_encoded: false }})
+  ```
+  and hold it in a data variable. Then we need to get the submission from the data and hold it in a result variable.
+- Now in the judge0 api call result is in status id format if the status id is 1 then it means the code is in queue and if the status id is 2 then it means the code is processing. If the the status id is not 1 and 2 it means that the code is run or say its done. So in code we need to use .every() method to check if all the status id is not 1 and 2. This means the code is done. We implement the .every method with the data submission result. And if it is true then return the result.
+- Now we need to run a for loop which runs till results.length. grab the result from each index of results array and hold it in a variable as result.
+- Now if the result.status.id is not equals to 3 then we need to return a response with status code 400 and a message "Submission failed".
+- Now create the problem inside the database like `db.problem.create` and give the data like `{ title, description, difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolutions }` also set the userId to req.user.id.
+- And return the response with status code 200 with the newly created problem data as a json and a message "Problem created successfully" and

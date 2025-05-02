@@ -23,3 +23,29 @@ export const submitBatch = async (submissions) => {
   // Here data is basically in token object
   return data;
 };
+
+// Function to sleep
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const pollBatchResult = async (tokens) => {
+  while (true) {
+    const { data } = await axios.get(
+      `${process.env.JUDGE0_API_URL}/submission/batch`,
+      {
+        params: {
+          tokens: tokens.join(","),
+          base64_encoded: false,
+        },
+      }
+    );
+    const results = data.submissions;
+
+    const isAllDone = results.every(
+      (result) => result.status.id !== 1 && result.status.id !== 2
+    );
+
+    if (isAllDone) return results;
+    // set a timer for 1 sec to avoid the overloadin of the api
+    await sleep(1000);
+  }
+};
