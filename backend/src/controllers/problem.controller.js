@@ -104,7 +104,7 @@ export const getAllProblems = async (req, res) => {
     const problems = await db.problem.findMany();
 
     // If no problems found
-    if (!problems) {
+    if (!problems || problems.length === 0) {
       return res.status(404).json({ message: "No problems found" });
     }
     // Return the problems
