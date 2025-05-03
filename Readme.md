@@ -73,3 +73,65 @@
 - Now if the result.status.id is not equals to 3 then we need to return a response with status code 400 and a message "Submission failed".
 - Now create the problem inside the database like `db.problem.create` and give the data like `{ title, description, difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolutions }` also set the userId to req.user.id.
 - And return the response with status code 200 with the newly created problem data as a json and a message "Problem created successfully" and
+
+### Here we have two backend like features one is for create problem and other is code execution part which is performed by judge0. When we create a problem it will then send to the code execution part or judge0 to execute the code. When the judge0 execute the code then it will return the return a done result to the createProblem backend. create problem backend also connected with database to store the problem data. When we send the code to the judge0 to execute at that time we dont have any connection with the judge0 backend. To solve this we need to implement those pollBatchResult and submitBatch functions so that we get some response or result(allDone) from the judge0 backend to the createProblem backend. We use judge0 because we cannot implement or execute the code in our backend.
+
+## Step 9:
+
+- Now lets check the create problem route with postman. with a json data like
+
+```
+{
+  "title": "Add Two numbers",
+  "description": "Given two numbers, return the sum of them",
+  "difficulty": "EASY",
+  "tags": ["math", "operator", "number"],
+  "examples": {
+    "PYTHON": {
+      "input": "5 4",
+      "output": "9",
+      "explanation": "Adding 5 and 4 gives us 9"
+    },
+    "JAVASCRIPT": {
+      "input": "-5 10",
+      "output": "5",
+      "explanation": "Adding -5 and 10 gives us 5"
+    },
+    "JAVA": {
+      "input": "-5 -10",
+      "output": "-15",
+      "explanation": "Adding -5 and -10 gives us -15"
+    },
+  },
+  "constraints": "-10^9 <= a, b <= 10^9",
+  "testcases": [
+    {
+      "input": "100 200",
+      "output": "300"
+    },
+    {
+      "input": "-700 -200",
+      "output": "-900"
+    },
+    {
+      "input": "0 0",
+      "output": "0"
+    }
+  ],
+   "codeSnippets": {
+      "JAVASCRIPT": "const fs = require('fs');\n\nfunction addTwoNumbers(a, b) {\n    // Write your code here\n    // Return the sum of a and b\n    return a + b;\n}\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(addTwoNumbers(a, b));",
+      "PYTHON": "def add_two_numbers(a, b):\n    # Write your code here\n    # Return the sum of a and b\n    return a + b\n\nimport sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(add_two_numbers(a, b))",
+      "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static int addTwoNumbers(int a, int b) {\n        // Write your code here\n        // Return the sum of a and b\n        return a + b;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(addTwoNumbers(a, b));\n    }\n}"
+  },
+  "referenceSolutions": {
+      "JAVASCRIPT": "const fs = require('fs');\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(a + b);",
+      "PYTHON": "import sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(a + b)",
+      "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(a + b);\n    }\n}"
+  }
+}
+```
+
+## Judge0 need input useing fs like "const input = fs.readFileSync(0, 'utf-8').trim();". 0 in readFileSync means the we use stream as input.
+
+- Now run the backend and login any user. But the user is now in USER. To change it again run another terminal for backend and run `npx prisma studio` to open prisma studio and change the user to ADMIN.
+-

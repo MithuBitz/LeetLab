@@ -13,24 +13,26 @@ export const getJudge0LanguageId = (language) => {
   return languageMap[language.toUpperCase()];
 };
 
+// Function to sleep
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const submitBatch = async (submissions) => {
   const { data } = await axios.post(
-    `${process.env.JUDGE0_API_URL}/submission/batch?base64_encoded=false`,
-    submissions
+    `${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,
+    {
+      submissions,
+    }
   );
 
-  // console.log(data);
+  console.log("Sumission Data: ", data);
   // Here data is basically in token object
   return data;
 };
 
-// Function to sleep
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export const pollBatchResult = async (tokens) => {
   while (true) {
     const { data } = await axios.get(
-      `${process.env.JUDGE0_API_URL}/submission/batch`,
+      `${process.env.JUDGE0_API_URL}/submissions/batch`,
       {
         params: {
           tokens: tokens.join(","),
@@ -42,6 +44,7 @@ export const pollBatchResult = async (tokens) => {
 
     const isAllDone = results.every(
       (result) => result.status.id !== 1 && result.status.id !== 2
+      // (result) => result.status.id > 2
     );
 
     if (isAllDone) return results;
