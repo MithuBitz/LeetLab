@@ -213,7 +213,34 @@ export const updateProblem = async (req, res) => {
 };
 
 export const deleteProblem = async (req, res) => {
-  res.send("deleteProblem controller hit");
+  // res.send("deleteProblem controller hit");
+  const { id } = req.params;
+
+  if (req.user.role !== "ADMIN") {
+    return res.status(403).json({
+      message: "Unauthorized to delete - Access denied you are not an admin",
+    });
+  }
+
+  try {
+    const deletedProblem = await db.problem.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (!deletedProblem) {
+      return res.status(404).json({ message: "Problem not found to delete" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Problem deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting problem:", error);
+    return res.status(500).json({ message: "Error while deleting problem" });
+  }
 };
 
 export const getAllProblemSolvedByUser = async (req, res) => {

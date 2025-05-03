@@ -152,3 +152,15 @@
 - Also code the catch block to return a response with status code 500 and a message "Error while fetching problem".
 
 ## Step 12:
+
+- Now implement the functionality of updateProblem controller. First we need to grab the id from the req.params and also grab the req.body for update the problem. First we need to use a try/catch block. In try block first we need to find the problem in database using id and hold the result in a variable as existing problem. if problem not exist then return a response with status code 404 and a message "Problem not found".
+- IF there is problem found then we need to update the problem useing 'update()' method with help of id and the data in req.body. Now we need to return a response with status code 200 and with success, message and updated problem.
+- Also code the catch block to return a response with status code 500 and a message "Error while updating problem".
+
+## Step 13:
+
+- Now implement the functionality of deleteProblem controller. Fisrt we need to grab the id from the req.params and hold it in a variable. Now use a try/catch block. In try block first we need to find the problem in database using id and hold the result in a variable as problem.
+- If there is no problem found then return a response with status code 404 and a message "Problem not found to delete".
+- If found the problem then we need to delete the problem useing 'delete()' method with help of id. Now we need to return a response with status code 200 and with success, message and deleted problem.
+- Also code the catch block to return a response with status code 500 and a message "Error while deleting problem".
+
