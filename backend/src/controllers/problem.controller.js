@@ -98,7 +98,25 @@ export const createProblem = async (req, res) => {
 };
 
 export const getAllProblems = async (req, res) => {
-  res.send("Get all problems controller hit");
+  // res.send("Get all problems controller hit");
+  try {
+    // Fetch all problems from db
+    const problems = await db.problem.findMany();
+
+    // If no problems found
+    if (!problems) {
+      return res.status(404).json({ message: "No problems found" });
+    }
+    // Return the problems
+    res.status(200).json({
+      success: true,
+      message: "Problems fetched successfully",
+      problems,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error while fetching problems" });
+  }
 };
 
 export const getProblemById = async (req, res) => {

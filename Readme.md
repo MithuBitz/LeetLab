@@ -136,4 +136,11 @@
 ## Judge0 need input useing fs like "const input = fs.readFileSync(0, 'utf-8').trim();". 0 in readFileSync means the we use stream as input.
 
 - Now run the backend and login any user. But the user is now in USER. To change it again run another terminal for backend and run `npx prisma studio` to open prisma studio and change the user to ADMIN.
--
+
+## Step 10:
+
+- Now implement the functionality of getAllProblems controller. First use a try/catch block. In try block first we need to find all the problems in database useing `findMany()` method and hold the result in a variable as problems. 
+- If ther is no problem found then return a response with status code 404 and a message "No problems found".
+- If there is problems found then return a response with status code 200 and with success, message and problems.
+- Also code the catch block to return a response with status code 500 and a message "Error while fetching problems".
+
