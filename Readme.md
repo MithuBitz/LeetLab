@@ -139,8 +139,14 @@
 
 ## Step 10:
 
-- Now implement the functionality of getAllProblems controller. First use a try/catch block. In try block first we need to find all the problems in database useing `findMany()` method and hold the result in a variable as problems. 
+- Now implement the functionality of getAllProblems controller. First use a try/catch block. In try block first we need to find all the problems in database useing `findMany()` method and hold the result in a variable as problems.
 - If ther is no problem found then return a response with status code 404 and a message "No problems found".
 - If there is problems found then return a response with status code 200 and with success, message and problems.
 - Also code the catch block to return a response with status code 500 and a message "Error while fetching problems".
 
+## Step 11:
+
+- Now implement the functionality of getProblemById controller. First we need to grab the id from the req.params and hold it in a variable. Now use a try/catch block. In try block first we need to find the problem in database using id and hold the result in a variable as problem.
+- If there is no problem found then return a response with status code 404 and a message "Problem not found".
+- If there is problem found then return a response with status code 200 and with success, message and problem.
+- Also code the catch block to return a response with status code 500 and a message "Error while fetching problem".
