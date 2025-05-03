@@ -141,12 +141,75 @@ export const getProblemById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching problem:", error);
-    return res.status(500).json({ message: "Error while fetching problem" });
+    return res
+      .status(500)
+      .json({ message: "Error while fetching problem by id" });
   }
 };
 
 export const updateProblem = async (req, res) => {
-  res.send("updateProblem controller hit");
+  // res.send("updateProblem controller hit");
+
+  const { id } = req.params;
+  const {
+    title,
+    description,
+    difficulty,
+    tags,
+    examples,
+    constraints,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+  } = req.body;
+
+  if (req.user.role !== "ADMIN") {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized - Access denied you are not an admin" });
+  }
+
+  try {
+    const existingProblem = await db.problem.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!existingProblem) {
+      return res.status(404).json({ message: "Problem not found to update" });
+    }
+
+    const updatedProblem = await db.problem.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+      },
+    });
+
+    if (!updatedProblem) {
+      return res.status(404).json({ message: "Update on problem failed" });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Problem updated successfully",
+      problem: updatedProblem,
+    });
+  } catch (error) {
+    console.error("Error updating problem:", error);
+    return res.status(500).json({ message: "Error while updating problem" });
+  }
 };
 
 export const deleteProblem = async (req, res) => {
