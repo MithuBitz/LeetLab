@@ -1,5 +1,7 @@
 # Create a LeetCode clone app
 
+![LeetLab](./docs/img/leetLab.jpg)
+
 ## Steps for devlopement
 
 ### Step 1:
