@@ -26,7 +26,7 @@ problemsRoutes.put(
   checkAdmin,
   updateProblem
 );
-problemsRoutes.get(
+problemsRoutes.delete(
   "/delete-problem/:id",
   authMiddleware,
   checkAdmin,

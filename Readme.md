@@ -164,3 +164,25 @@
 - If found the problem then we need to delete the problem useing 'delete()' method with help of id. Now we need to return a response with status code 200 and with success, message and deleted problem.
 - Also code the catch block to return a response with status code 500 and a message "Error while deleting problem".
 
+## Now the execution of code part. Now when we give the solution code and hit the submit button then the code will be submitted to judge0 backend and then judge0 will execute the code and will return the submission result. And now we need to store that submission result in the database so we need a submission schema. And this submission result data will be used by the user and problems. And need to track each user submission like which is wrong and which is accepted. We also need a testcased table to track each testcase result. And we also need a problemSolved which will be used to track that all the problems which are solved by the user.
+
+## Step 14:
+
+- Create a Submission model which have the following fields like id, userId, problemId, sourceCode (Json), language, stdin(OPtional), stdout(Optional), stderr, compiledOutput, status, memory, time, createdAt, updatedAt.
+- Create a relation with user and problem model with 'user' and 'problem' like
+  user User @relation(fields: [userId], references: [id] , onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id] , onDelete: Cascade)
+- Also need to add submission field in Problem and User model.
+- We also need testCases in Submission model which is basically an array of TestCaseResult[] model. Beacuse we can have multiple testcases in one submission.
+- In TestCaseResult model have id, submissionId, testCase(number basically because it will tell how many testcase is done by user), passed(boolean), stdout, expected, stderr, compileOutput, status, memory, time, createdAt, updatedAt. 
+- And create a relation with Submission with submissionId to id.
+- submissionId as @@index
+
+## Why we need testCaseResult? --> For every testcase judge0 give us result with some specific info. And we need to store all these specific info into the testCaseResult for each submission.
+
+- Also create a ProblemSolved model which have id, userId, problemId, createdAt, updatedAt/
+- Also create relation with User and Problem. Also use the ProblemSolved in User and Problem. In User the linked ProblemSolved name as problemSolved and In Problem it is as solvedBy.
+- and userId and problemId must be as @@unique
+- run a command `npx prisma generate` to generate the prisma client
+- and then run `npx prisma migrate dev` to migrate the database. and add a migration name
+- run `npx prisma db push` to push the database
