@@ -174,7 +174,7 @@
   problem Problem @relation(fields: [problemId], references: [id] , onDelete: Cascade)
 - Also need to add submission field in Problem and User model.
 - We also need testCases in Submission model which is basically an array of TestCaseResult[] model. Beacuse we can have multiple testcases in one submission.
-- In TestCaseResult model have id, submissionId, testCase(number basically because it will tell how many testcase is done by user), passed(boolean), stdout, expected, stderr, compileOutput, status, memory, time, createdAt, updatedAt. 
+- In TestCaseResult model have id, submissionId, testCase(number basically because it will tell how many testcase is done by user), passed(boolean), stdout, expected, stderr, compileOutput, status, memory, time, createdAt, updatedAt.
 - And create a relation with Submission with submissionId to id.
 - submissionId as @@index
 
@@ -186,3 +186,30 @@
 - run a command `npx prisma generate` to generate the prisma client
 - and then run `npx prisma migrate dev` to migrate the database. and add a migration name
 - run `npx prisma db push` to push the database
+
+## Step 15:
+
+- Create and endpoint `execute-code` inside index.js with help of `executionRoute`.
+- Create a `executeCode.routes.js` file in routes directory. Where first import express and then use the boilerPlate for this route.
+- Create a post method inside the `executeCode.routes.js` file with help of `executionRoute` Which hit "/" with authmiddleware and the executeCode controller.
+- Create a executeCode.controller.js file in controller directory.Where we can create a executeCode controller.
+- In executeCode controller we first creat a try/catch block.
+- In try block first we need to grab the source_code, language_id, stdin, expected_output and problemId from the req.body.
+- Now get the userId from the req.user.id.
+- Validate the test cases like if stdin is not an array or stdin.length is equal to 0 or expected_output is not an array or expected_outputs.length is not equal to stdin.length then return a response with status code 400 and a message "Invalid or Missing test cases".
+- Prepare each test cases for judge0 batch submission. For this we need to map through the stdin to go each input and grab source_code, language_id and stdin as each input. Now hold it in a submission variable.
+- Now send this submission to judge0 with help of submitBatch function and hold the result in a variable as submitResponse.
+- Now for get all tokens we need to map through the submitResponse and grab each token and hold it in a tokens variable.
+- Poll judge0 for the result of all submitted test cases with help of pollBatchResult with tokens as params function and hold the result in a result variable.
+- send a response with status code 200 and a message "Code executed successfully".
+- Now we can check the endpoint with help of postman. and send data in json format like
+  ```
+  {
+    "source_code": "const fs = require('fs');\n\nfunction addTwoNumbers(a, b) {\n    // Write your code here\n    // Return the sum of a and b\n    return a + b;\n}\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(addTwoNumbers(a, b));",
+      "PYTHON": "def add_two_numbers(a, b):\n    # Write your code here\n    # Return the sum of a and b\n    return a + b\n\nimport sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(add_two_numbers(a, b))",
+    "language_id": 63,
+    "stdin": ["100 200", "-500 -600", "0 0"],
+    "expected_output": ["300", "-1100", "0"],
+    "problemId": "<need to grab from any problem id>"
+  }
+  ```
