@@ -293,3 +293,24 @@
 - Then with help of findMany() inside the submission table we find all the submissions by userId and hold the result in a variable like submissions.
 - Now send the response with status code 200 with the submissions.
 - Implement the catch part.
+
+
+## Step 18:
+
+- Implement get submission by id controller. First grab the userId from the req.user.id and grab the problemId from the req.params.
+- Now use findMany() inside the submission table to find all the submission by userId and problemId.
+- Now send the response with status code 200 with success, message and submissions.
+- Also implement the catch part.
+  
+## Step 19:
+
+- Implement get all the submission for problem controller. First grab the problemId from the req.params.
+- Now use .count() inside the submission table to count all the submission by problemId.
+- Now send the response with status code 200 with success, message and count.
+
+## Step 20:
+
+- Implement the get all problems solved by user controller of problem.controller.js file. 
+- First find the problem which is solved by the current user with help of findMany() using some filter which point to the current user id. Means filter those solved by problem which is solved by current user. 
+- Then include the solvedBy field inside the problem with help of include: { solvedBy: { where: { userId: req.user.id } } }. So that we can get all the problems which are solved by current user.
+- Now send the response with status code 200 with success, message and problems.

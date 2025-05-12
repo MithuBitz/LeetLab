@@ -239,10 +239,39 @@ export const deleteProblem = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting problem:", error);
-    return res.status(500).json({ message: "Error while deleting problem" });
+    return res.status(500).json({ error: "Error while deleting problem" });
   }
 };
 
 export const getAllProblemSolvedByUser = async (req, res) => {
-  res.send("getAllProblemSolvedByUser controller hit");
+  // res.send("getAllProblemSolvedByUser controller hit");
+  try {
+    const problems = await db.problem.findMany({
+      where: {
+        solvedBy: {
+          some: {
+            userId: req.user.id,
+          },
+        },
+      },
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Problems fetched successfully",
+      problems,
+    });
+  } catch (error) {
+    console.error("Error in getting problem solved by current user:", error);
+    return res
+      .status(500)
+      .json({ error: "Error in getting problem solved by current user" });
+  }
 };
