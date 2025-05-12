@@ -213,3 +213,72 @@
     "problemId": "<need to grab from any problem id>"
   }
   ```
+
+## Step 16:
+
+- Now we need to analyse the test case results.
+- For this first set a variable allPassed to true. Which actully means all test cases are passed.
+- Now map through the results geting from pollBatchResult function. And for each result grab the stdout like `result.stdout?.trim()` and hold it in a variable as stdout.
+- Now we can get the expected_output fromt the test cases with help of index which also we need to give in map function. And hold it in a variable as expected_output like `expected_output[i]?.trim()`.
+- Now check if stdout is equal to expected_output then set true for a variable called passed.
+- Lets console for the passed variable, input, expected_output, actual output from judge0 and also the passed variable.
+- If passed is false then set allPassed to false.
+- return an object according to TestCaseResult schema. like
+  ```
+    {
+      testCase: i + 1,
+      passed,
+      stdout,
+      ecpected: expected_output,
+      stderr: result.stderr || null,
+      compileOutput: result.compile_output || null,
+      status: result.status.description,
+      memory: result.memory ? `${result.memory} KB` : undefined,
+      time: result.time ? `${result.time} s` : undefined
+    }
+  ```
+- Now store the submission result in the database like db.submission.create(). with data like userId, problemId, sourceCode, language, stdin (stdin.join("\n")), stdout, stderr, compileOutput, status, memory, time
+- For language we need to create a judge0 utility to get the language name. For this utilituy we need to create a function inside the judge0.libs file which take the languageId as a parameter and inside the function create a languge name object which have all language id with their respective language name. And return the language name if languageId is present in the object. If not then return "Unknown".
+- To store stdout inside the db we need to first grab the value from the detailResult variable like `detailResults.map((r) => r.stdout)` and then convert it to string with help of `JSON.stringify(detailResults.map((r) => r.stdout))`.
+- To store the error we need to check the detailedResults for stderr with help of some() like `detailedResults.some((r) => r.stderr)`. If true then store the error as string useing `JSON.stringify` in the db else store null.
+- To store the status according to allPassed variable we need to check if allPassed is true then store "Accepted" else store "Wrong Answer".
+- Now if all passed is true then mark the problem as solved for the current user. If all passed then upsert the problemSolved table of that perticular problemId with userId. and if that perticular problemId and userId already exist then update the field but in our case we need not to be updated anything so we dont give any logic in update like `update{}` and if that perticular problemId and userId does not exist then create a new row with userId and problemId.
+- Now we need to save the indivisual test case result in the db. For this first we need to map through the details results and grab each result like submission.id, testCase, passed, stdout, stderr, compileOutput, expected, status, memory, time. And then create a new test case result row with these data as db.testCaseResult.createMany().
+- Now we need to save the testCases inside the submission table. For this first we need to uniquely find the submission with help of id: submission.id. And then include the testCases inside the submission with help of include: { testCases: true }.
+- Now send the response with status code 200 with the submission with testcases.
+- The return of runing execute code route is like
+  ```
+     "success": true,
+    "message": "Code executed successfully",
+    "submission": {
+        "id": "83e317c4-acb0-4738-927e-10ac5f08e705",
+        "userId": "cma85o4wd0000ysxcw7o5ym24",
+        "problemId": "82e9c68e-13b1-46af-8b9f-376294e9b5cd",
+        "sourceCode": "const fs = require('fs');\n\nfunction addTwoNumbers(a, b) {\n    // Write your code here\n    // Return the sum of a and b\n    return a + b;\n}\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(addTwoNumbers(a, b));",
+        "language": "JAVASCRIPT",
+        "stdin": "100 200\n-500 -600\n0 0",
+        "stdout": "[\"300\",\"-1100\",\"0\"]",
+        "stderr": null,
+        "compileOutput": null,
+        "status": "Accepted",
+        "memory": null,
+        "time": "[\"1.787 s\",\"2.493 s\",\"2.535 s\"]",
+        "createdAt": "2025-05-12T11:10:04.547Z",
+        "updatedAt": "2025-05-12T11:10:04.547Z",
+        "testCases": [
+            {
+                "id": "049a7d2b-bef2-40d1-aa12-1f8854cdab34",
+                "submissionId": "83e317c4-acb0-4738-927e-10ac5f08e705",
+                "testCase": 1,
+                "passed": true,
+                "stdout": "300",
+                "expected": "300",
+                "stderr": null,
+                "compileOutput": null,
+                "status": "Accepted",
+                "memory": "15964 KB",
+                "time": "1.787 s",
+                "createdAt": "2025-05-12T11:10:05.422Z",
+                "updatedAt": "2025-05-12T11:10:05.422Z"
+            },
+  ```
