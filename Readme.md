@@ -282,3 +282,14 @@
                 "updatedAt": "2025-05-12T11:10:05.422Z"
             },
   ```
+
+## Step 17:
+
+- Create a submission route in index.js with help of submissionRoute. Adding boiler plate code for this route with controller.
+- in submission route we create a get mehtod for get all submission with help of authmiddleware and a get all submission controller.
+- Also create a get method for get submission by id with help of authmiddleware and a get submission by id controller and also create a get method for get submission count for a specific problem id with help of authmiddleware and a get all the submission for problem controller.
+- Now create and intialize the above controller inside submission.controller.js file.
+- For the get all submission controller we create a try/catch block. In try block first we grab the userId from the req.user.id and hold it in a variable like userId.
+- Then with help of findMany() inside the submission table we find all the submissions by userId and hold the result in a variable like submissions.
+- Now send the response with status code 200 with the submissions.
+- Implement the catch part.
