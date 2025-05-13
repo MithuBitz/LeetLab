@@ -332,4 +332,12 @@
 - Again create a post method for add problem to playlist with help of playlistId as params like `/:playlistId/add-problem`. We need authmiddleware and add problem to playlist controller.
 - Now we need to create a delete method for delete playlist with help of playlistId as params and we need authmiddleware and delete playlist controller.
 - And at last create a delete method for remove problem from playlist with help of playlistId as params like `/:playlistId/remove-problem`. We need authmiddleware and remove problem from playlist controller.
-- Now create and intialize the above controller inside playlist.controller.js file. 
+- Now create and intialize the above controller inside playlist.controller.js file.
+
+## Step 23:
+
+- First implement the create playlist controller. For this first get the name and description of the playlist from the req.body and also grab the userId from the req.user.id.
+- Now create a new playlist with help of create() inside the playlist table and set data like name, description, userId.
+- Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
+
+## Step 24:
