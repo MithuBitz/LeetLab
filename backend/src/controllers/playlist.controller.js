@@ -1,5 +1,31 @@
 export const getAllListDetails = async (req, res) => {
-  console.log(" 🔨 getAllListDetails controller Hit");
+  //   console.log(" 🔨 getAllListDetails controller Hit");
+  try {
+    const playlists = await db.playlist.findMany({
+      where: {
+        userId: req.user.id,
+      },
+      include: {
+        problems: {
+          include: {
+            problem: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Playlist fetched successfully",
+      playlists,
+    });
+  } catch (error) {
+    console.error("Error fetching playlists : ", error);
+    return res.status(500).json({
+      success: false,
+      error: "Error while fetching playlists :: getAllListDetails",
+    });
+  }
 };
 
 export const getPlaylistDetails = async (req, res) => {
@@ -29,8 +55,7 @@ export const createPlaylist = async (req, res) => {
     console.error("Error executing code:", error);
     return res.status(500).json({
       success: false,
-      error:
-        "Error while executing code for geting submission count for problem",
+      error: "Error while creating playlist :: createPlaylist",
     });
   }
 };

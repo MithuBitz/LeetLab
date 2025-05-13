@@ -336,8 +336,12 @@
 
 ## Step 23:
 
-- First implement the create playlist controller. For this first get the name and description of the playlist from the req.body and also grab the userId from the req.user.id.
+- Now implement the create playlist controller. For this first get the name and description of the playlist from the req.body and also grab the userId from the req.user.id.
 - Now create a new playlist with help of create() inside the playlist table and set data like name, description, userId.
 - Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
 
 ## Step 24:
+
+- Now implement the get all list details controller. For this we need to call findMany() inside the playlist table. where userId is equal to req.user.id.
+- Also need to include the problems field and also need to include only those problem which are on that playlist.
+- Now send the response with status code 200 with success, message and playlists. Now implement the catch part also.
