@@ -29,7 +29,40 @@ export const getAllListDetails = async (req, res) => {
 };
 
 export const getPlaylistDetails = async (req, res) => {
-  console.log(" 🔨 getPlaylistDetails controller Hit");
+  //   console.log(" 🔨 getPlaylistDetails controller Hit");
+  const { playlistId } = req.params;
+
+  try {
+    const playlist = await db.playlist.findUnique({
+      where: {
+        id: playlistId,
+        userId: req.user.id,
+      },
+      include: {
+        problems: {
+          include: {
+            problem: true,
+          },
+        },
+      },
+    });
+
+    if (!playlist) {
+      return res.status(404).json({ error: "Playlist not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Playlist fetched successfully",
+      playlist,
+    });
+  } catch (error) {
+    console.error("Error fetching a playlist : ", error);
+    return res.status(500).json({
+      success: false,
+      error: "Error while fetching a playlist :: getPlaylistDetails",
+    });
+  }
 };
 
 export const createPlaylist = async (req, res) => {

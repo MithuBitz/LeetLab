@@ -345,3 +345,11 @@
 - Now implement the get all list details controller. For this we need to call findMany() inside the playlist table. where userId is equal to req.user.id.
 - Also need to include the problems field and also need to include only those problem which are on that playlist.
 - Now send the response with status code 200 with success, message and playlists. Now implement the catch part also.
+
+## Step 25:
+
+- Now implement the get playlist by id controller. For this first grab the playlistId from the req.params.
+- Now call findUnique() inside the playlist table. where id is equal to playlistId and userId is equal to req.user.id.
+- Also need to include the problems field and also need to include only those problem which are on that playlist.
+- if playlist is not found then send the response with status code 404 with a error message.
+- Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
