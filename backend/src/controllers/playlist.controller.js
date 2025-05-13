@@ -85,7 +85,7 @@ export const createPlaylist = async (req, res) => {
       playlist,
     });
   } catch (error) {
-    console.error("Error executing code:", error);
+    console.error("Error creatng playlist :", error);
     return res.status(500).json({
       success: false,
       error: "Error while creating playlist :: createPlaylist",
@@ -94,7 +94,34 @@ export const createPlaylist = async (req, res) => {
 };
 
 export const addProblemToPlaylist = async (req, res) => {
-  console.log(" 🔨 addProblemToPlaylist controller Hit");
+  //   console.log(" 🔨 addProblemToPlaylist controller Hit");
+  const { playlistId } = req.params;
+  const { problemIds } = req.body;
+
+  try {
+    if (!Array.isArray(problemIds) || problemIds.length === 0) {
+      return res.status(400).json({
+        error: "Please provide problem to store in the playlist",
+      });
+    }
+    const problemInPlaylist = db.playlistInProblem.createMany({
+      data: problemIds.map((problemId) => ({
+        playlistId,
+        problemId,
+      })),
+    });
+    res.status(201).json({
+      success: true,
+      message: "Problem added to playlist successfully",
+      problemInPlaylist,
+    });
+  } catch (error) {
+    console.error("Error to add problem to playlist : ", error);
+    return res.status(500).json({
+      success: false,
+      error: "Error while add problem to playlist :: addProblemToPlaylist",
+    });
+  }
 };
 
 export const deletePlaylist = async (req, res) => {

@@ -353,3 +353,10 @@
 - Also need to include the problems field and also need to include only those problem which are on that playlist.
 - if playlist is not found then send the response with status code 404 with a error message.
 - Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
+
+## Step 26:
+
+- Now add problems to a playlist controller. For this first grab the playlistId from the req.params and also grab the problemIds from the req.body.
+- Now check if problemIds is not an array or problemIds length is equal to 0 then send the response with status code 400 with a error message.
+- Now create each problem in the playlist with help of createMany() inside the playlistInProblem table and set the data like map through problemIds and for each problemId set the data like playlistId and problemId.
+- Now send the response with status code 201 with success, message and playlist. Now implement the catch part also.
