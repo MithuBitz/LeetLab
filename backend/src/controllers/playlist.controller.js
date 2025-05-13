@@ -104,7 +104,7 @@ export const addProblemToPlaylist = async (req, res) => {
         error: "Please provide problem to store in the playlist",
       });
     }
-    const problemInPlaylist = db.playlistInProblem.createMany({
+    const problemInPlaylist = db.problemInPlaylist.createMany({
       data: problemIds.map((problemId) => ({
         playlistId,
         problemId,
@@ -125,9 +125,63 @@ export const addProblemToPlaylist = async (req, res) => {
 };
 
 export const deletePlaylist = async (req, res) => {
-  console.log(" 🔨 deletePlaylist controller Hit");
+  //   console.log(" 🔨 deletePlaylist controller Hit");
+  const { playlistId } = req.params;
+
+  try {
+    const deletedPlaylist = await db.playlist.delete({
+      where: {
+        id: playlistId,
+        userId: req.user.id,
+      },
+    });
+
+    res.status(200).jsonl({
+      success: true,
+      message: "Playlist deleted successfully",
+      deletePlaylist,
+    });
+  } catch (error) {
+    console.error("Error deleteing playlist : ", error);
+    return res.status(500).json({
+      success: false,
+      error: "Error while delete playlist :: deletePlaylist",
+    });
+  }
 };
 
 export const removeProblemFromPlaylist = async (req, res) => {
-  console.log(" 🔨 removeProblemFromPlaylist controller Hit");
+  //   console.log(" 🔨 removeProblemFromPlaylist controller Hit");
+  const { playlistId } = req.params;
+  const { problemIds } = req.body;
+
+  try {
+    if (!Array.isArray(problemIds) || problemIds.length === 0) {
+      return res.status(404).json({
+        error: "Please provide problem to remove from the playlist",
+      });
+    }
+
+    const deletedProblem = db.problemInPlaylist.deleteMany({
+      where: {
+        playlistId,
+        problemId: {
+          in: problemIds,
+        },
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Problem removed from playlist successfully",
+      deletedProblem,
+    });
+  } catch (error) {
+    console.error("Error deleteing problem from playlist : ", error);
+    return res.status(500).json({
+      success: false,
+      error:
+        "Error while delete problem from playlist :: removeProblemFromPlaylist",
+    });
+  }
 };

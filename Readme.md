@@ -360,3 +360,16 @@
 - Now check if problemIds is not an array or problemIds length is equal to 0 then send the response with status code 400 with a error message.
 - Now create each problem in the playlist with help of createMany() inside the playlistInProblem table and set the data like map through problemIds and for each problemId set the data like playlistId and problemId.
 - Now send the response with status code 201 with success, message and playlist. Now implement the catch part also.
+
+## Step 27:
+
+- Now implement the delete playlist controller. For this first grab the playlistId from the req.params.
+- Now call delete() inside the playlist table. where id is equal to playlistId and userId is equal to req.user.id.
+- Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
+
+## Step 28:
+
+- Now implement the remove problem from playlist controller. For this first grab the playlistId from the req.params and also grab the problemIds from the req.body.
+- Now check if problemIds is not an array or problemIds length is equal to 0 then send the response with status code 400 with a error message.
+- Now delete each problem in the playlist with help of deleteMany() inside the problemInPlaylist table. where playlistId is equal to playlistId and problemId is in problemIds like `problemId: { in: problemIds }`.
+- Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
