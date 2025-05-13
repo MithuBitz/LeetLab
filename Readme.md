@@ -294,14 +294,13 @@
 - Now send the response with status code 200 with the submissions.
 - Implement the catch part.
 
-
 ## Step 18:
 
 - Implement get submission by id controller. First grab the userId from the req.user.id and grab the problemId from the req.params.
 - Now use findMany() inside the submission table to find all the submission by userId and problemId.
 - Now send the response with status code 200 with success, message and submissions.
 - Also implement the catch part.
-  
+
 ## Step 19:
 
 - Implement get all the submission for problem controller. First grab the problemId from the req.params.
@@ -310,7 +309,27 @@
 
 ## Step 20:
 
-- Implement the get all problems solved by user controller of problem.controller.js file. 
-- First find the problem which is solved by the current user with help of findMany() using some filter which point to the current user id. Means filter those solved by problem which is solved by current user. 
+- Implement the get all problems solved by user controller of problem.controller.js file.
+- First find the problem which is solved by the current user with help of findMany() using some filter which point to the current user id. Means filter those solved by problem which is solved by current user.
 - Then include the solvedBy field inside the problem with help of include: { solvedBy: { where: { userId: req.user.id } } }. So that we can get all the problems which are solved by current user.
 - Now send the response with status code 200 with success, message and problems.
+
+## Step21 :
+
+- Need toCreate a playlist which basically store the problems which is solved by current user. For this first create a Playlist model which have id, name, description, userId, createdAt, updatedAt, problems (Which is basically a array of problems like ProblemInPlaylist[]).
+- Create a user relation and also a unique field based on name and userId. so that each user has unique playlist.
+- Now create a PlaylistInProblem model which have id, playListId, problemId, createdAt, updatedAt. Also crate a relation with Playlist for this model.
+- Also create a problem relation with Promblem.
+- And create a unique field based on playlistId and problemId.
+- Add playlist inside the user model. Also add playlist inside the problem model as problemsPlaylists.
+
+## Step 22:
+
+- Create a playlist route in index.js with help of playlistRoute. Adding boiler plate code for this route with controller.
+- In playlist route we create a get method for get all list details with help of authmiddleware and a get all list details controller.
+- Also create a get mehtod for get playlist by id with help of authmiddleware with get playlist details controller.
+- Also we need to create a post method for crate a playlist with help of authmiddleware and a create playlist controller.
+- Again create a post method for add problem to playlist with help of playlistId as params like `/:playlistId/add-problem`. We need authmiddleware and add problem to playlist controller.
+- Now we need to create a delete method for delete playlist with help of playlistId as params and we need authmiddleware and delete playlist controller.
+- And at last create a delete method for remove problem from playlist with help of playlistId as params like `/:playlistId/remove-problem`. We need authmiddleware and remove problem from playlist controller.
+- Now create and intialize the above controller inside playlist.controller.js file. 
