@@ -390,3 +390,11 @@
 - Now inside the app file we need to import Routes, Route and Navigate from react-router-dom.
 - Then add some tailwing className inside the outer div of the App component.`flex flex-col items-center justify-start`
 - Now create a Routes which have Route for Login with a path of "/login" and the element to render is `<LoginPage>` and also create Route for Home and signup.
+
+## Step 3:
+
+- Now create a page directory inside the source folder where we can create a login page, home page and signup page.
+- Now create a HomePage.jsx, LoginPage.jsx and SignupPage.jsx file inside the page directory.
+- For testing now create a authUser variable and set it to null.
+- Then use a ternary operator to check if authUser is null then render the LoginPage else render the HomePage.
+
