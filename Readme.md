@@ -373,3 +373,12 @@
 - Now check if problemIds is not an array or problemIds length is equal to 0 then send the response with status code 400 with a error message.
 - Now delete each problem in the playlist with help of deleteMany() inside the problemInPlaylist table. where playlistId is equal to playlistId and problemId is in problemIds like `problemId: { in: problemIds }`.
 - Now send the response with status code 200 with success, message and playlist. Now implement the catch part also.
+
+# Now start Frontend Part
+
+## Step 1:
+
+- We use react, tailwind-css, daisyUI, Zustand, zod and  react-hook-form as a frontend framework. We use more also when we need.
+- Now first go to DaisyUI and follow the steps mention in their documentation.
+- First go to the frontend folder and run and command `npm create vite@latest` to create vite project and then run `npm install` to install required packages. Then run `npm run dev` to start the vite server.
+- 
