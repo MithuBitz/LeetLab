@@ -378,7 +378,7 @@
 
 ## Step 1:
 
-- We use react, tailwind-css, daisyUI, Zustand, zod and  react-hook-form as a frontend framework. We use more also when we need.
+- We use react, tailwind-css, daisyUI, Zustand, zod and react-hook-form as a frontend framework. We use more also when we need.
 - Now first go to DaisyUI and follow the steps mention in their documentation.
 - First go to the frontend folder and run and command `npm create vite@latest` to create vite project and then run `npm install` to install required packages. Then run `npm run dev` to start the vite server.
-- 
+- Install Tailwind CSS and daisyUI using `npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest`
