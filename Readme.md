@@ -382,3 +382,11 @@
 - Now first go to DaisyUI and follow the steps mention in their documentation.
 - First go to the frontend folder and run and command `npm create vite@latest` to create vite project and then run `npm install` to install required packages. Then run `npm run dev` to start the vite server.
 - Install Tailwind CSS and daisyUI using `npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest`
+
+## Step 2:
+
+- Now install react-router-dom using `npm i react-router-dom` for routing.
+- Import BrowserRouter inside the main.jsx file and wrap the App inside it.
+- Now inside the app file we need to import Routes, Route and Navigate from react-router-dom.
+- Then add some tailwing className inside the outer div of the App component.`flex flex-col items-center justify-start`
+- Now create a Routes which have Route for Login with a path of "/login" and the element to render is `<LoginPage>` and also create Route for Home and signup.
