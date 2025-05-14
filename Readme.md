@@ -398,3 +398,12 @@
 - For testing now create a authUser variable and set it to null.
 - Then use a ternary operator to check if authUser is null then render the LoginPage else render the HomePage.
 
+## Step 4:
+
+- Now install react-hook-form using `npm i react-hook-form`.
+  -Now lets build the SignUp page. For that first import the useForm from react-hook-form.
+- Also install zod resolver for hookform using `npm i @hookform/resolvers `, And then import the zodReslover from `@hookform/resolvers/zod`.
+- And also install zod using `npm i zod`.
+- Now import Link from react-router-dom.
+- Also install a icon related library named lucide-react using `npm i lucide-react`. To import the icons like `Code, Eye, EyeOff, Loader2, Lock, Mail`.
+- Now import z from zod. And create a signup schema with zod for email, name and password.
