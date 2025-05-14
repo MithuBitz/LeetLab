@@ -407,3 +407,11 @@
 - Now import Link from react-router-dom.
 - Also install a icon related library named lucide-react using `npm i lucide-react`. To import the icons like `Code, Eye, EyeOff, Loader2, Lock, Mail`.
 - Now import z from zod. And create a signup schema with zod for email, name and password.
+
+## Step 5:
+
+- Set a useState for showPassword and set it to false initially.
+- Now destructure the register, handleSubmit, formState: { errors } from useForm hook and also use resolver from zodResolver as signupSchema.
+- Create a onSubmit async function which get the data as parameter for handleSubmit.
+- Now lets implement the UI part of signup.
+- {...register("name")} This helps to get the value of name(setup in Backend as name) from the form.
