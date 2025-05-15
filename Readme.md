@@ -419,4 +419,23 @@
 
 ## Step 6:
 
+- Now lets build the login page. Its just copy paste of signup page with some modification.
+- Now install axios and zustand using `npm i axios zustand`.
+- Then create a store and lib directory inside the src folder.
+- In lib create a axios.js file where we can add all axios realated code.
+- First import axios from axios. Then create a axios instance with baseURL as my backend url. like `baseURL: import.meta.env.MODE === "development" ? "http://localhost:8000/api/v1" : "/api/v1", withCredentials: true`.
+
+## Step 7:
+
+- Now crate a useAuthStore.js file inside the store directory.
+- First import the create from zustand. Zustand is basically a state management library which help to manage the state of the application.
+- Now also import the axios instance which are created inside the axios.js file.
+- Now create a useAuthStore with help of zustand create to set some global state of the application like authUser, isSigninUp, isLogingIn, isCheckingAuth as null, false, false, false.
+- Now according auth routes we have four routes. And some method for each routes.
+- First create a checkAuth async method inside the useAuthStore. Where we first set the isCheckingAuth to true.
+- Then in try catch/catch block we can call the backend api.
+- In try block we can get the response with help of axios instance for the specific route like `await axiosInstance.get("/auth/check")` and hold the response in a variable like response.
+- Then set the authUser to response.data.user. data is a property of response provide by axios and user is a property of data provide by axios or we set in the backend in check route and controller.
+- Now in the catch block we set the auth user to null.
+- Then in finally block we set the isCheckingAuth to false.
 
