@@ -6,6 +6,8 @@ import { z } from "zod";
 
 import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
+import AuthImagePattern from "../components/AuthImagePattern";
+
 // Create a signup schema useing zod
 const SignupSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -148,6 +150,13 @@ const SignupPage = () => {
           </div>
         </div>
       </div>
+      {/* Right Side - Image/Pattern */}
+      <AuthImagePattern
+        title={"Welcome to our platform!"}
+        subtitle={
+          "Sign up to access our platform and start using our services."
+        }
+      />
     </div>
   );
 };

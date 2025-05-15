@@ -415,3 +415,8 @@
 - Create a onSubmit async function which get the data as parameter for handleSubmit.
 - Now lets implement the UI part of signup.
 - {...register("name")} This helps to get the value of name(setup in Backend as name) from the form.
+- Also implement AuthImagePattern component.
+
+## Step 6:
+
+
