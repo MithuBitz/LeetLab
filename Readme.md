@@ -439,3 +439,9 @@
 - Now in the catch block we set the auth user to null.
 - Then in finally block we set the isCheckingAuth to false.
 
+## Step 8:
+
+- Now lets install react-hot-toast using `npm i react-hot-toast`.
+- Now import the Toster from react-hot-toast inside the app.jsx file and render the Toaster inside the app before the Routes.
+- Now inside the useAuthStore we need to import the toast from react-hot-toast.
+- Now lets create signup, login and logout async method as same as checkAuth method.
