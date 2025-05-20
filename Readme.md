@@ -445,3 +445,12 @@
 - Now import the Toster from react-hot-toast inside the app.jsx file and render the Toaster inside the app before the Routes.
 - Now inside the useAuthStore we need to import the toast from react-hot-toast.
 - Now lets create signup, login and logout async method as same as checkAuth method.
+
+## Step 9:
+
+- Now lets call the useAuthStore inside the App component and get or destructure the value from it like authUser, checkAuth, isCheckingAuth.
+- Now call a useEffect hook to call the checkAuth method and pass it as a dependency also so that any changes in checkAuth will call the useEffect.
+- Now if isCheckingAuth is true and authUser is null then render a loader. Loader is imported from lucide-react.
+
+## Step 10:
+
