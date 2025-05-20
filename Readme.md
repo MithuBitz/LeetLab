@@ -454,3 +454,16 @@
 
 ## Step 10:
 
+- Now inside the Signup page we need to first import the useAuthStore. And then distructure or get the signup method from the useAuthStore.
+- Inside the onSubmit function we need to first call a try/catch block. Iniside the try block we need to call the signup method and pass the data as parameter. Also we can log the data for debugging.
+- Inside the catch block we need to log the error for debugging.
+- And then in submit button we can use disabled the button if isSigninUp is true.
+- ANd also if isSigninUp is true then show a loader else show the text as Signup.
+
+## Step 11:
+
+- Now inside the Login page we need to first import the useAuthStore. And then distructure or get the login and isLogingIn method from the useAuthStore.
+- Inside the onSubmit function we need to first call a try/catch block. Iniside the try block we need to call the login method and pass the data as parameter. Also we can log the data for debugging.
+- Inside the catch block we need to log the error for debugging.
+- And then in submit button we can use disabled the button if isLogingIn is true.
+- ANd also if isLogingIn is true then show a loader else show the text as Login.
