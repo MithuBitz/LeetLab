@@ -472,3 +472,20 @@
 
 - Fix some issue regarding cors in login and signup page.
 - For this we first install and import cors in backend inside index.js file. Where we need to add a middleware for cors where we set the origin to the frontend url and also set credentials to true.
+
+## Step 13:
+
+- Now lets implement the HomePage with proper way like useing a Layout component.
+- For this first we need to add a Layout Route inside the App.jsx where the path is "/" and the element to render is `<Layout />`.
+- Inside the Route we need to add a index Route inside the Layout Route to render is `<HomePage />`.
+- Now we create a layout folder inside the src folder where we can create a Layout.jsx file.
+- Inside the Layout.jsx we need to import Outlet from react-router-dom and render the Outlet.
+- And also create a NavBar components inside the components folder where we can create a NavBar.jsx file.
+- Inside the NavBar.jsx we need to first import some icons from lucide-react like User, Code and LogOut.
+- And also import the useAuthStore and also Link from react-router-dom.
+- get authUser from the useAuthStore.
+- Implement the UI part for the NavBar.
+
+## Step 14:
+
+- We also need a LogoutButton component inside the components folder where we can create a LogoutButton.jsx file.

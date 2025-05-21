@@ -26,7 +26,7 @@ const SignupPage = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(SignupSchema),
-  });
+  }); 
 
   const onSubmit = async (data) => {
     console.log(data);
