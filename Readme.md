@@ -493,3 +493,13 @@
 - Create a LogoutButton component which take children as a prop.
 - In UI return a button with the children and on click method we call a onLogout method.
 - In onLogout async method we call the logout method from the useAuthStore.
+
+## Step 15:
+
+- Create a Route as element is AdminRoute inside the App.jsx where there is another route with path "/add-problem" and the element to render is if authUser is true then render `<AddProblem />` else render `<Navigate to="/" />`.
+- Now Create the AdminRoute component inside the components folder where we can create a AdminRoute.jsx file.
+- And Create a page directory inside the source folder where we can create a AddProblem.jsx file.
+- Now inside the AdminRoute first we need to import useAuthStore and get the authUser and is isCheckingAuth from the useAuthStore.
+- Now if isCheckingAuth is true then render a loader. Loader is imported from lucide-react.
+- And if authUser is null or authUser.role is not admin then return `<Navigate to="/" />`.
+- Finally return the Outlet.
