@@ -3,6 +3,7 @@ import { User, LogOut, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useAuthStore } from "../store/useAuthStore.js";
+import LogoutButton from "./LogoutButton.jsx";
 
 const NavBar = () => {
   const { authUser } = useAuthStore();

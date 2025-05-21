@@ -488,4 +488,8 @@
 
 ## Step 14:
 
-- We also need a LogoutButton component inside the components folder where we can create a LogoutButton.jsx file.
+- Now we need a LogoutButton component inside the components folder where we can create a LogoutButton.jsx file.
+- Where we first import the useAuthStore to get the logout method.
+- Create a LogoutButton component which take children as a prop.
+- In UI return a button with the children and on click method we call a onLogout method.
+- In onLogout async method we call the logout method from the useAuthStore.
