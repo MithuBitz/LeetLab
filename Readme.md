@@ -467,3 +467,8 @@
 - Inside the catch block we need to log the error for debugging.
 - And then in submit button we can use disabled the button if isLogingIn is true.
 - ANd also if isLogingIn is true then show a loader else show the text as Login.
+
+## Step 12:
+
+- Fix some issue regarding cors in login and signup page.
+- For this we first install and import cors in backend inside index.js file. Where we need to add a middleware for cors where we set the origin to the frontend url and also set credentials to true.

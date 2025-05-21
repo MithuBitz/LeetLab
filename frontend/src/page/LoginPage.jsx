@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { Code, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
-import AuthImagePattern from "../components/AuthImagePattern.js";
+import AuthImagePattern from "../components/AuthImagePattern.jsx";
 import { useAuthStore } from "../store/useAuthStore.js";
 
 // Create a signup schema useing zod

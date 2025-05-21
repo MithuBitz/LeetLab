@@ -3,22 +3,22 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Loader } from "lucide-react";
 
-import HomePage from "./page/HomePage";
-import LoginPage from "./page/LoginPage";
-import SignupPage from "./page/SignupPage";
-import useAuthStore from "./store/useAuthStore";
+import HomePage from "./page/HomePage.jsx";
+import LoginPage from "./page/LoginPage.jsx";
+import SignupPage from "./page/SignupPage.jsx";
+import {useAuthStore} from "./store/useAuthStore.js";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth])
+  }, [checkAuth]);
 
-  if(isCheckingAuth && !authUser) {
+  if (isCheckingAuth && !authUser) {
     <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin"/>
-    </div>
+      <Loader className="size-10 animate-spin" />
+    </div>;
   }
 
   return (
