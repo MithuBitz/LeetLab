@@ -503,3 +503,25 @@
 - Now if isCheckingAuth is true then render a loader. Loader is imported from lucide-react.
 - And if authUser is null or authUser.role is not admin then return `<Navigate to="/" />`.
 - Finally return the Outlet.
+
+## Step 16:
+
+- Inside the AddProblem page we need to first render a component called CreateProblemForm inside the AddProblem page.
+- Now create a CreateProblemForm component inside the components folder.
+- Here Now import useForm, useFieldArray and controller from react-hook-form.
+- Also import zodResolver from @hookform/resolvers/zod.
+- Also import z from zod.
+- And also we need some icon like Plus, Trash2, Code2, FileText, Lightbulb, BookOpen, CheckCircle2 and Download from lucide-react.
+- At this time we need to install mocnaco-editor using `npm i monaco-editor` and `npm i @monaco-editor/react` for ide inside the app.
+- Now import Editor from '@monaco-editor/react'.
+- Also import axiosInstance from lib.
+- We also need toast from react-hot-toast and useNavigate from react-router-dom.
+- Now we need the problemSchema with help of zode.
+- Now create a instance of useNavigate called as navigation.
+- Then inside the useForm we need to set the resolver to zodResolver(problemSchema).
+- Also we need to set the defaultValues to the problemSchema.
+- Now with help of useFieldArray we can append, remove and update the fields for testCases and tagFields also.
+- After that create a isLoading state to handle the loading state.
+- Then create a onSubmit async method to handle the form submission. At this time just initialze with a console log.
+- And finally return the UI for the form.
+- Also add sample data and sample string problem. And then load the sample data.
