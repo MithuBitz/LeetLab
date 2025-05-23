@@ -537,3 +537,26 @@
 - Now in catch block we log the error and also show a toast.error with the message "Error while creating problem".
 - And finally setIsLoading to false.
 - We also need to check the indentation on python code solution before submit the form. To solve the judge0 error.
+
+## Step 18:
+
+- Now lets show the created problem. For this we first need a zustand store named useProblemStore.
+- Now import the create form zustand, toast from react-hot-toast and axiosInstance from lib folder.
+- Now create a instance of useProblemStore with help of set metod of create and set some global state like problems which is basically an array of problems initialized with an empty array, problem which is initialized with null, solvedProblems which is also initialized with an empty array, isProblemsLoading and also isProblemLoading which are initialized with false.
+- Now create some async method like getAllProblem, getProblemById, getSolvedProblemById.
+- Now implement the getAllProblem async method. First we need to set a try/catch block.
+- In try block first we need to set the isProblemsLoading to true.
+- Then we need to call a get request with help of axiosInstance to the backend on "/problems/get-all-problems" route and hold the response in a variable like response.
+- Then set the problems to response.data.problems.
+- Now in catch block we log the error and also show a toast.error with the message "Error while fetching problems".
+- And finally set the isProblemsLoading to false.
+- Now implement the getProblemById async method. First we need to set a try/catch block.
+- In try block first we need to set the isProblemLoading to true.
+- Then we need to call a get request with help of axiosInstance to the backend on "/problems/get-problem/${id}" route and hold the response in a variable like response.
+- Then set the problem to response.data.problem.
+- Now in catch block we log the error and also show a toast.error with the message "Error while fetching problem".
+- And finally set the isProblemLoading to false.
+- Now also implement the getSolvedProblemByUser async method. First we need to set a try/catch block.
+- In try block we need to call a get request with help of axiosInstance to the backend on "/problems/get-solved-problem" route and hold the response in a variable like response.
+- Then set the solvedProblems to response.data.solvedProblems.
+- Now in catch block we log the error and also show a toast.error with the message "Error while fetching solved problems".
