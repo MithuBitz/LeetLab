@@ -560,3 +560,15 @@
 - In try block we need to call a get request with help of axiosInstance to the backend on "/problems/get-solved-problem" route and hold the response in a variable like response.
 - Then set the solvedProblems to response.data.solvedProblems.
 - Now in catch block we log the error and also show a toast.error with the message "Error while fetching solved problems".
+
+
+## Step 19:
+
+- Now lets show the problem inside the ui. Like if any problem is there then show all details related to those problems and if not then show a message like "No problems found" inside the HomePage.
+- Now inside the Home page first we need to import useEffect, useProblemStore and also Loader form lucide-react.
+- Now get the getAllProblems, problems and isProblemsLoading from useProblemStore.
+- Now use a useEffect hook to call the getAllProblems method and pass a dependency with getAllProblems also so that any changes in getAllProblems will call the useEffect.
+- Now we can get all the problems from the useProblemStore whenever we need to show the problems inside the UI.
+- Now if isProblemsLoading is true then show a Loader.
+- For now inside the return we need a condition if problems.length > 0 then show just a text like "Problem Found" else show a paragraph with a message like "No problems found".
+- 

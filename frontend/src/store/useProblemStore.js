@@ -36,7 +36,7 @@ export const useProblemStore = create((set) => ({
       set({ isProblemLoading: false });
     }
   },
-  getSolvedProblemByUser: async (id) => {
+  getSolvedProblemByUser: async () => {
     try {
       const response = await axiosInstance.get("/problems/get-solved-problems");
       set({ solvedProblems: response.data.solvedProblems });
