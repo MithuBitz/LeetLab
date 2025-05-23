@@ -563,7 +563,21 @@ const CreateProblemForm = () => {
   const [sampleType, setSampleType] = useState("DP");
 
   const onSubmit = async (data) => {
-    console.log("OnSUbit data on create problem form: ", data);
+    console.log("OnSUbmit data on create problem form: ", data);
+    try {
+      setIsLoading(true);
+      const response = await axiosInstance.post(
+        "/problems/create-problem",
+        data
+      );
+      toast.success(response.data.message || "Problem created successfully");
+      navigation("/");
+    } catch (error) {
+      console.error("Error creating problem: ", error);
+      toast.error("Error while creating problem");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const loadSampleData = () => {

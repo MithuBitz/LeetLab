@@ -525,3 +525,15 @@
 - Then create a onSubmit async method to handle the form submission. At this time just initialze with a console log.
 - And finally return the UI for the form.
 - Also add sample data and sample string problem. And then load the sample data.
+
+## Step 17:
+
+- Now lets implement the onSubmit method for the CreateProblemForm.
+- Here we need to call a post request to the backend with the problem data. For this first we need to add a try/catch block.
+- First in try block we need to setIsLoading to true.
+- Then we need to call a post request with help of axiosInstance to the backend on "/problems/create-problem" route with the problem data.
+- Now for confirmation we need to show a toast.success with the message get from the post request or if there is now message then give a hardcoded message like "Problem created successfully".
+- Then navigate to the "/" route with help of navigation.
+- Now in catch block we log the error and also show a toast.error with the message "Error while creating problem".
+- And finally setIsLoading to false.
+- We also need to check the indentation on python code solution before submit the form. To solve the judge0 error.
