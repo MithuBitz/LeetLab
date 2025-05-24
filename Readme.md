@@ -561,7 +561,6 @@
 - Then set the solvedProblems to response.data.solvedProblems.
 - Now in catch block we log the error and also show a toast.error with the message "Error while fetching solved problems".
 
-
 ## Step 19:
 
 - Now lets show the problem inside the ui. Like if any problem is there then show all details related to those problems and if not then show a message like "No problems found" inside the HomePage.
@@ -571,4 +570,15 @@
 - Now we can get all the problems from the useProblemStore whenever we need to show the problems inside the UI.
 - Now if isProblemsLoading is true then show a Loader.
 - For now inside the return we need a condition if problems.length > 0 then show just a text like "Problem Found" else show a paragraph with a message like "No problems found".
-- 
+
+## Step 20:
+
+- Now lets create a components to show the Problems in a table called ProblemTable.
+- Now in the ProblemTable component we need to give a problems as a prop.
+- Now import useState, useMemo, useAuthStore, Link and also some icon like Bookmark, PencilIcon, Trash, TrashIcon, Plus from lucide-react.
+- Now get the authUser from useAuthStore.
+- Then create some state like search default as empty string, difficulity default as ALL, selectedTag default as ALL and for pagination we need a state currentPage default as 1.
+- Now implement the UI part.
+- First we need a array to store all dificulites like "EASY","HARD", "MEDIUM" so that we can show it on the dropdown.
+- In case of tag if we have many problems with many tags. But some of them are same for many problems. So we dont need to render multiple same tag to show in the dropdown. For this we need to create unique tags for multiple same tag. To implement this we need to use useMemo. First we need to confirm if problems is not an array then return a empty array. But if there is a problem array first crate a new variable tagsSet using Set() of useMemo. Now go to the problems array and for each problem get the tags which is also an array where all related tag is stored, so we need to again check for each tag and add it to the tagsSet. And return the tagsSet as array using Array.form. And also in the useMemo dependency array set the problems so if any changes in problems it will set the tagsSet.
+- Now implement the UI for tags and difficulity.
