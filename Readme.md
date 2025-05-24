@@ -582,3 +582,18 @@
 - First we need a array to store all dificulites like "EASY","HARD", "MEDIUM" so that we can show it on the dropdown.
 - In case of tag if we have many problems with many tags. But some of them are same for many problems. So we dont need to render multiple same tag to show in the dropdown. For this we need to create unique tags for multiple same tag. To implement this we need to use useMemo. First we need to confirm if problems is not an array then return a empty array. But if there is a problem array first crate a new variable tagsSet using Set() of useMemo. Now go to the problems array and for each problem get the tags which is also an array where all related tag is stored, so we need to again check for each tag and add it to the tagsSet. And return the tagsSet as array using Array.form. And also in the useMemo dependency array set the problems so if any changes in problems it will set the tagsSet.
 - Now implement the UI for tags and difficulity.
+
+## Step 21:
+
+- Now implement the Table to show all problems.
+- In UI in table header we need to set the names like "Solved", "Title", "Tags", "Difficulty" and "Actions".
+- Now Implement a filltered problems based on search, difficulty and tag. For this we need to use useMemo. Inside the useMemo return problems or a empty array. and implement a filter which goes to each problem and set the problem.tile to Lowercase to check it is include in the search or not.
+- In next filter we need to again go to each problem and check if difficulty is "ALL" then set it true so that all problems are shown else check problem.difficulty is equal to difficulity.
+- In the next filter we need to go to each problem and check if selectedTag is "ALL" then set it true so that all problems are shown else check problem.tags is include in the selectedTag.
+- At last in the useMemo dependency array we need to set problems, search, difficulty, selectedTag for any changes.
+- Now implement the pagination part. For this first we need to create a variable for itemsPerPage and set it to 5.
+- Then we to create a variable for totalPages which is equal to Math.ceil(filteredProblems.length / itemsPerPage).
+- Now we need to use useMemo to create a variable for paginatedProblems which is return to filteredProblems.slice((currentPage - 1) _ itemsPerPage, currentPage _ itemsPerPage). Which basically generate if current page is 1 then slice the array from 0 to 5. If current page is 2 then slice the array from 5 to 10.
+- And also we need to set the currentPage and fiteredProblems in useMemo dependency array.
+- Now inside the table body if paginatedProblems length is greater than 0 then show all the problems else show a message like "No problems found".
+- Also include the solvedBy inside the get all problems controller.

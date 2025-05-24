@@ -101,7 +101,15 @@ export const getAllProblems = async (req, res) => {
   // res.send("Get all problems controller hit");
   try {
     // Fetch all problems from db
-    const problems = await db.problem.findMany();
+    const problems = await db.problem.findMany({
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    });
 
     // If no problems found
     if (!problems || problems.length === 0) {
