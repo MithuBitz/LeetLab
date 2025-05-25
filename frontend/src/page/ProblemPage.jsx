@@ -69,7 +69,106 @@ const ProblemPage = () => {
     );
   }
 
-  console.log("Problem :", problem);
+  // console.log("Problem :", problem);
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "description":
+        return (
+          <div className="prose max-w-none">
+            <p className="text-lg mb-6">{problem.description}</p>
+
+            {problem.examples && (
+              <>
+                <h3 className="text-xl font-bold mb-4">Examples:</h3>
+                {Object.entries(problem.examples).map(
+                  ([lang, example], idx) => (
+                    <div
+                      key={lang}
+                      className="bg-base-200 p-6 rounded-xl mb-6 font-mono"
+                    >
+                      <div className="mb-4">
+                        <div className="text-indigo-300 mb-2 text-base font-semibold">
+                          Input:
+                        </div>
+                        <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white">
+                          {example.input}
+                        </span>
+                      </div>
+                      <div className="mb-4">
+                        <div className="text-indigo-300 mb-2 text-base font-semibold">
+                          Output:
+                        </div>
+                        <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white">
+                          {example.output}
+                        </span>
+                      </div>
+                      {example.explanation && (
+                        <div>
+                          <div className="text-emerald-300 mb-2 text-base font-semibold">
+                            Explanation:
+                          </div>
+                          <p className="text-base-content/70 text-lg font-sem">
+                            {example.explanation}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
+              </>
+            )}
+
+            {problem.constraints && (
+              <>
+                <h3 className="text-xl font-bold mb-4">Constraints:</h3>
+                <div className="bg-base-200 p-6 rounded-xl mb-6">
+                  <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white text-lg">
+                    {problem.constraints}
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
+        );
+      case "submissions":
+        return (
+          <div className="p-4 text-center text-base-content/70">
+            No Submission
+          </div>
+        );
+      //   return (
+      //     <SubmissionsList
+      //       submissions={submissions}
+      //       isLoading={isSubmissionsLoading}
+      //     />
+
+      case "discussion":
+        return (
+          <div className="p-4 text-center text-base-content/70">
+            No discussions yet
+          </div>
+        );
+      case "hints":
+        return (
+          <div className="p-4">
+            {problem?.hints ? (
+              <div className="bg-base-200 p-6 rounded-xl">
+                <span className="bg-black/90 px-4 py-1 rounded-lg font-semibold text-white text-lg">
+                  {problem.hints}
+                </span>
+              </div>
+            ) : (
+              <div className="text-center text-base-content/70">
+                No hints available
+              </div>
+            )}
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-300 to-base-200 max-w-7xl w-full">
@@ -125,6 +224,83 @@ const ProblemPage = () => {
           </select>
         </div>
       </nav>
+
+      <div className="container mx-auto p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body p-0">
+              <div className="tabs tabs-bordered">
+                <button
+                  className={`tab gap-2 ${
+                    activeTab === "description" ? "tab-active" : ""
+                  }`}
+                  onClick={() => setActiveTab("description")}
+                >
+                  <FileText className="w-4 h-4" />
+                  Description
+                </button>
+                <button
+                  className={`tab gap-2 ${
+                    activeTab === "submissions" ? "tab-active" : ""
+                  }`}
+                  onClick={() => setActiveTab("submissions")}
+                >
+                  <Code2 className="w-4 h-4" />
+                  Submissions
+                </button>
+                <button
+                  className={`tab gap-2 ${
+                    activeTab === "discussion" ? "tab-active" : ""
+                  }`}
+                  onClick={() => setActiveTab("discussion")}
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Discussion
+                </button>
+                <button
+                  className={`tab gap-2 ${
+                    activeTab === "hints" ? "tab-active" : ""
+                  }`}
+                  onClick={() => setActiveTab("hints")}
+                >
+                  <Lightbulb className="w-4 h-4" />
+                  Hints
+                </button>
+              </div>
+
+              <div className="p-6">{renderTabContent()}</div>
+            </div>
+          </div>
+          <div classname="card bg-base-100 shadow-xl">
+            <div className="card-body p-0">
+              <div className="tabs tabs-bordered">
+                <button className="tab tab-active gap-2">
+                  <Terminal className="w-4 h-4" />
+                  Code Editor
+                </button>
+              </div>
+              <div className="h-[600px] w-full">
+                <Editor
+                  height="100%"
+                  language={selectedLanguage.toLowerCase()}
+                  theme="vs-dark"
+                  value={code}
+                  onChange={(value) => setCode(value || "")}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 20,
+                    lineNumbers: "on",
+                    roundedSelection: false,
+                    scrollBeyondLastLine: false,
+                    readOnly: false,
+                    automaticLayout: true,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
