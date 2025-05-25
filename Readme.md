@@ -597,3 +597,21 @@
 - And also we need to set the currentPage and fiteredProblems in useMemo dependency array.
 - Now inside the table body if paginatedProblems length is greater than 0 then show all the problems else show a message like "No problems found".
 - Also include the solvedBy inside the get all problems controller.
+
+## Step 22:
+
+- Now lets implement when user click on specific problem then show the problem details.
+- For this first we need to set up a Route inside the App where the path is "/problem/:id" and the element is render based on authUser. if There is a authUser then render `<ProblemPage />` else navigate to "/login".
+- Now create a ProblemPage inside the page. Where we need to first import useParams from the "react-router-dom".
+- Now get the id from the useParams.
+- Also we need to import useState, useEffect, Editor from "@monaco-editor/react", some Icon from lucide-react and useProblemStore.
+- now extract all method like getProblemById, problem and isProblemLoading from useProblemStore.
+- Now use a useEffect hook to call getProblemById method and pass the id as parameter. And in dependency array we need to set id.
+- Now we need some state like code with default as empty string, activeTab with default as "description", selectedLanguage with default as "javascript", isBookmarked with default as false and testCases with default as empty array.
+- Now again we need a useEffect hook where if there is problem then set the code to problem.codeSnippets?.[selectedLanguage] (related to backend schema) or "".
+- Also we need to set the testCases to problem.testcases (related to backend schema) and map through each testcase and set the input to testcase input and output to testcase output or a empty array.
+- Also we need to set problem and selectedLanguage as dependency array.
+- Now implement the UI part for navbar.
+- Create a handle Language change function which take the language from event target and set it to selected Language.
+
+

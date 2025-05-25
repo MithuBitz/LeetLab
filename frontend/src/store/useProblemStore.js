@@ -28,7 +28,10 @@ export const useProblemStore = create((set) => ({
     try {
       set({ isProblemLoading: true });
       const response = await axiosInstance.get(`/problems/get-problem/${id}`);
+      console.log("Response from getProblemById: ", response);
+
       set({ problem: response.data.problem });
+      toast.success(response.data.message);
     } catch (error) {
       console.error("Error fetching a problem by id", error);
       toast.error("Error getting problem by id");
