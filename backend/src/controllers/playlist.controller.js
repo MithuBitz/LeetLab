@@ -1,3 +1,5 @@
+import { db } from "../libs/db.js";
+
 export const getAllListDetails = async (req, res) => {
   //   console.log(" 🔨 getAllListDetails controller Hit");
   try {
@@ -67,10 +69,12 @@ export const getPlaylistDetails = async (req, res) => {
 
 export const createPlaylist = async (req, res) => {
   // console.log(" 🔨 createPlaylist controller Hit");
-  const { name, description } = req.body;
-  const { userId } = req.user.id;
 
   try {
+    const { name, description } = req.body;
+    const userId = req.user.id;
+
+    console.log("UserID", userId);
     const playlist = await db.playlist.create({
       data: {
         name,
@@ -94,33 +98,40 @@ export const createPlaylist = async (req, res) => {
 };
 
 export const addProblemToPlaylist = async (req, res) => {
-  //   console.log(" 🔨 addProblemToPlaylist controller Hit");
   const { playlistId } = req.params;
-  const { problemIds } = req.body;
+  const { problemIds } = req.body; // Accept an array of problem IDs
+
+  console.log(req.params, req.body);
 
   try {
+    // Ensure problemIds is an array
     if (!Array.isArray(problemIds) || problemIds.length === 0) {
-      return res.status(400).json({
-        error: "Please provide problem to store in the playlist",
-      });
+      return res.status(400).json({ error: "Invalid or missing problemIds" });
     }
-    const problemInPlaylist = db.problemInPlaylist.createMany({
-      data: problemIds.map((problemId) => ({
+
+    console.log(
+      problemIds.map((problemId) => ({
         playlistId,
+        problemId,
+      }))
+    );
+
+    // Create records for each problem in the playlist
+    const problemsInPlaylist = await db.problemInPlaylist.createMany({
+      data: problemIds.map((problemId) => ({
+        playlistId: playlistId, // ✅ match your Prisma field name exactly
         problemId,
       })),
     });
+
     res.status(201).json({
       success: true,
-      message: "Problem added to playlist successfully",
-      problemInPlaylist,
+      message: "Problems added to playlist successfully",
+      problemsInPlaylist,
     });
   } catch (error) {
-    console.error("Error to add problem to playlist : ", error);
-    return res.status(500).json({
-      success: false,
-      error: "Error while add problem to playlist :: addProblemToPlaylist",
-    });
+    console.error("Error adding problems to playlist:", error.message);
+    res.status(500).json({ error: "Failed to add problems to playlist" });
   }
 };
 
@@ -139,7 +150,7 @@ export const deletePlaylist = async (req, res) => {
     res.status(200).jsonl({
       success: true,
       message: "Playlist deleted successfully",
-      deletePlaylist,
+      deletedPlaylist,
     });
   } catch (error) {
     console.error("Error deleteing playlist : ", error);

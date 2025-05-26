@@ -11,15 +11,24 @@ import {
 
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useActions } from "../store/useAction.js";
+import { usePlaylistStore } from "../store/usePlaylistStore.js";
+import AddToPlaylistModal from "./AddToPlaylist.jsx";
+import CreatePlaylistModal from "./CreatePlaylistModel.jsx";
+// import { set } from "react-hook-form";
 
 const ProblemTable = ({ problems }) => {
   const { authUser } = useAuthStore();
   const { isDeletingProblem, onDeleteProblem } = useActions();
+  const { createPlaylist } = usePlaylistStore();
 
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("ALL");
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
+    useState(false);
+  const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   const difficulties = ["HARD", "MEDIUM", "EASY"];
 
@@ -63,14 +72,24 @@ const ProblemTable = ({ problems }) => {
     onDeleteProblem(id);
   };
 
-  const handleAddToPlaylist = (id) => {};
+  const handleAddToPlaylist = (problemId) => {
+    setSelectedProblemId(problemId);
+    setIsAddToPlaylistModalOpen(true);
+  };
+
+  const handleCreatePlaylist = async (data) => {
+    await createPlaylist(data);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-10">
       {/* Header with Create Playlist Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Problems</h2>
-        <button className="btn btn-primary gap-2" onClick={() => {}}>
+        <button
+          className="btn btn-primary gap-2"
+          onClick={() => setIsCreateModelOpen(true)}
+        >
           <Plus className="w-4 h-4" />
           Create Playlist
         </button>
@@ -237,6 +256,16 @@ const ProblemTable = ({ problems }) => {
           Next
         </button>
       </div>
+      <CreatePlaylistModal
+        isOpen={isCreateModelOpen}
+        onClose={() => setIsCreateModelOpen(false)}
+        onSubmit={handleCreatePlaylist}
+      />
+      <AddToPlaylistModal
+        isOpen={isAddToPlaylistModalOpen}
+        onClose={() => setIsAddToPlaylistModalOpen(false)}
+        problemId={selectedProblemId}
+      />
     </div>
   );
 };
