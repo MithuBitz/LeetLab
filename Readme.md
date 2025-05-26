@@ -615,5 +615,3 @@
 - Create a handle Language change function which take the language from event target and set it to selected Language.
 
 ## Step 23:
-
-

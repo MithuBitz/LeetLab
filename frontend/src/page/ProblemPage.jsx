@@ -1,6 +1,5 @@
-import { Editor } from "@monaco-editor/react";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import Editor from "@monaco-editor/react";
 import {
   Play,
   FileText,
@@ -17,32 +16,44 @@ import {
   ThumbsUp,
   Home,
 } from "lucide-react";
-
-import { useProblemStore } from "../store/useProblemStore.js";
+import { Link, useParams } from "react-router-dom";
+import { useProblemStore } from "../store/useProblemStore";
+import { getLanguageId } from "../lib/lang";
+import { useExecutionStore } from "../store/useExecutionStore";
+import { useSubmissionStore } from "../store/useSubmissionStore";
+import Submission from "../components/Submission";
+import SubmissionsList from "../components/SubmissionList";
 
 const ProblemPage = () => {
-  const { getProblemById, problem, isProblemLoading } = useProblemStore();
   const { id } = useParams();
+  const { getProblemById, problem, isProblemLoading } = useProblemStore();
 
-  console.log("Problem ID: ", id);
+  const {
+    submission: submissions,
+    isLoading: isSubmissionsLoading,
+    getSubmissionForProblem,
+    getSubmissionCountForProblem,
+    submissionCount,
+  } = useSubmissionStore();
 
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [testCases, setTestCases] = useState([]);
+  const [testcases, setTestCases] = useState([]);
 
-  const submissionCount = 10;
-
-  console.log("Problem Initial :", problem);
+  const { executeCode, submission, isExecuting } = useExecutionStore();
 
   useEffect(() => {
     getProblemById(id);
+    getSubmissionCountForProblem(id);
   }, [id]);
 
   useEffect(() => {
     if (problem) {
-      setCode(problem.codeSnippets?.[selectedLanguage] || "");
+      setCode(
+        problem.codeSnippets?.[selectedLanguage] || submission?.sourceCode || ""
+      );
       setTestCases(
         problem.testcases?.map((tc) => ({
           input: tc.input,
@@ -52,10 +63,30 @@ const ProblemPage = () => {
     }
   }, [problem, selectedLanguage]);
 
+  useEffect(() => {
+    if (activeTab === "submissions" && id) {
+      getSubmissionForProblem(id);
+    }
+  }, [activeTab, id, getSubmissionForProblem]);
+
+  console.log("submission in PRoblemPage", submissions);
+
   const handleLanguageChange = (e) => {
-    const language = e.target.value;
-    setSelectedLanguage(language);
-    setCode(problem.codeSnippets?.[language] || "");
+    const lang = e.target.value;
+    setSelectedLanguage(lang);
+    setCode(problem.codeSnippets?.[lang] || "");
+  };
+
+  const handleRunCode = (e) => {
+    e.preventDefault();
+    try {
+      const language_id = getLanguageId(selectedLanguage);
+      const stdin = problem.testcases.map((tc) => tc.input);
+      const expected_outputs = problem.testcases.map((tc) => tc.output);
+      executeCode(code, language_id, stdin, expected_outputs, id);
+    } catch (error) {
+      console.log("Error executing code", error);
+    }
   };
 
   if (isProblemLoading || !problem) {
@@ -68,10 +99,6 @@ const ProblemPage = () => {
       </div>
     );
   }
-
-  // console.log("Problem :", problem);
-
-  const submission = false;
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -135,16 +162,11 @@ const ProblemPage = () => {
         );
       case "submissions":
         return (
-          <div className="p-4 text-center text-base-content/70">
-            No Submission
-          </div>
+          <SubmissionsList
+            submissions={submissions}
+            isLoading={isSubmissionsLoading}
+          />
         );
-      //   return (
-      //     <SubmissionsList
-      //       submissions={submissions}
-      //       isLoading={isSubmissionsLoading}
-      //     />
-
       case "discussion":
         return (
           <div className="p-4 text-center text-base-content/70">
@@ -273,7 +295,8 @@ const ProblemPage = () => {
               <div className="p-6">{renderTabContent()}</div>
             </div>
           </div>
-          <div classname="card bg-base-100 shadow-xl">
+
+          <div className="card bg-base-100 shadow-xl">
             <div className="card-body p-0">
               <div className="tabs tabs-bordered">
                 <button className="tab tab-active gap-2">
@@ -281,6 +304,7 @@ const ProblemPage = () => {
                   Code Editor
                 </button>
               </div>
+
               <div className="h-[600px] w-full">
                 <Editor
                   height="100%"
@@ -299,13 +323,17 @@ const ProblemPage = () => {
                   }}
                 />
               </div>
+
               <div className="p-4 border-t border-base-300 bg-base-200">
                 <div className="flex justify-between items-center">
                   <button
-                    className={`btn btn-primary gap-2`}
-                    onClick={() => {}}
+                    className={`btn btn-primary gap-2 ${
+                      isExecuting ? "loading" : ""
+                    }`}
+                    onClick={handleRunCode}
+                    disabled={isExecuting}
                   >
-                    <Play className="w-4 h-4" />
+                    {!isExecuting && <Play className="w-4 h-4" />}
                     Run Code
                   </button>
                   <button className="btn btn-success gap-2">
@@ -316,10 +344,11 @@ const ProblemPage = () => {
             </div>
           </div>
         </div>
+
         <div className="card bg-base-100 shadow-xl mt-6">
           <div className="card-body">
             {submission ? (
-              <h1>Submission Data</h1>
+              <Submission submission={submission} />
             ) : (
               <>
                 <div className="flex items-center justify-between mb-6">
@@ -334,7 +363,7 @@ const ProblemPage = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {testCases.map((testCase, index) => (
+                      {testcases.map((testCase, index) => (
                         <tr key={index}>
                           <td className="font-mono">{testCase.input}</td>
                           <td className="font-mono">{testCase.output}</td>

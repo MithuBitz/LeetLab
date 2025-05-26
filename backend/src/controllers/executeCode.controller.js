@@ -82,7 +82,7 @@ export const executeCode = async (req, res) => {
           ? JSON.stringify(detailResults.map((r) => r.compileOutput))
           : null,
         status: allPassed ? "Accepted" : "Wrong Answer",
-        memory: detailResults.some((r) => detailResults.memory)
+        memory: detailResults.some((r) => r.memory)
           ? JSON.stringify(detailResults.map((r) => r.memory))
           : null,
         time: detailResults.some((r) => r.time)

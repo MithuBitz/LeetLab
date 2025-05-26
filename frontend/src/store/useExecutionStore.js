@@ -25,7 +25,7 @@ export const useExecutionStore = create((set) => ({
           problemId,
         })
       );
-      const res = await axiosInstance.post("/execute-code", {
+      const res = await axiosInstance.post("/execute-code/", {
         source_code,
         language_id,
         stdin,
@@ -34,6 +34,8 @@ export const useExecutionStore = create((set) => ({
       });
 
       set({ submission: res.data.submission });
+
+      console.log("Submission from uesExec: ", res);
 
       toast.success(res.data.message);
     } catch (error) {
