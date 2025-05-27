@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const getAllSubmissions = async (req, res) => {
   //   console.log(" 🔨 Get All submission controller Hit");
@@ -17,10 +18,19 @@ export const getAllSubmissions = async (req, res) => {
     });
   } catch (error) {
     console.error("Error executing code:", error);
-    res.status(500).json({
-      success: false,
-      error: "Error while executing code for geting submission",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   error: "Error while executing code for geting submission",
+    // });
+    res
+      .status(500)
+      .json(
+        new ApiError(
+          500,
+          null,
+          "Error while executing code for geting submission"
+        )
+      );
   }
 };
 
@@ -45,10 +55,19 @@ export const getSubmissionById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error executing code:", error);
-    res.status(500).json({
-      success: false,
-      error: "Error while executing code for geting submission by id",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   error: "Error while executing code for geting submission by id",
+    // });
+    res
+      .status(500)
+      .json(
+        new ApiError(
+          500,
+          null,
+          "Error while executing code for geting submission by id"
+        )
+      );
   }
 };
 
@@ -71,10 +90,19 @@ export const getSubmissionCountForProblem = async (req, res) => {
     });
   } catch (error) {
     console.error("Error executing code:", error);
-    res.status(500).json({
-      success: false,
-      error:
-        "Error while executing code for geting submission count for problem",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   error:
+    //     "Error while executing code for geting submission count for problem",
+    // });
+    res
+      .status(500)
+      .json(
+        new ApiError(
+          500,
+          null,
+          "Error while executing code for geting submission count for problem"
+        )
+      );
   }
 };

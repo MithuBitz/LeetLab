@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 
 import { UserRole } from "../generated/prisma/index.js";
 import { db } from "../libs/db.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const registerUser = async (req, res) => {
   // res.send("Register controller hit");
@@ -11,9 +13,12 @@ export const registerUser = async (req, res) => {
 
   //validation
   if (!name || !email || !password) {
-    return res.status(400).json({
-      message: "All fields are required",
-    });
+    // return res.status(400).json({
+    //   message: "All fields are required",
+    // });
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "All fields are required"));
   }
   try {
     // check if the user already exists
@@ -24,9 +29,13 @@ export const registerUser = async (req, res) => {
     });
     // if exist return an response
     if (userExist) {
-      return res.status(400).json({
-        message: "User already exists",
-      });
+      // return res.status(400).json({
+      //   message: "User already exists",
+      // });
+
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "User already exists"));
     }
     // Create a hash password to store indb
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,10 +51,14 @@ export const registerUser = async (req, res) => {
     });
 
     if (!newUser) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        success: false,
-      });
+      // return res.status(500).json({
+      //   message: "Something went wrong",
+      //   success: false,
+      // });
+
+      return res
+        .status(500)
+        .json(new ApiResponse(500, null, "Something went wrong"));
     }
 
     // create the token
@@ -81,10 +94,13 @@ export const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error registering user:", error);
-    return res.status(500).json({
-      message: "Unable to register user",
-      success: false,
-    });
+    // return res.status(500).json({
+    //   message: "Unable to register user",
+    //   success: false,
+    // });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Unable to register user"));
   }
 };
 
@@ -108,9 +124,12 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({
-        error: "Invalid credentials",
-      });
+      // return res.status(401).json({
+      //   error: "Invalid credentials",
+      // });
+      return res
+        .status(401)
+        .json(new ApiError(401, null, "Invalid credentials"));
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
@@ -137,9 +156,10 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({
-      error: "Error logging in user",
-    });
+    // res.status(500).json({
+    //   error: "Error logging in user",
+    // });
+    res.status(500).json(new ApiError(500, null, "Error logging in user"));
   }
 };
 
@@ -152,15 +172,20 @@ export const logout = async (req, res) => {
       secure: process.env.NODE_ENV !== "development",
     });
 
-    res.status(200).json({
-      success: true,
-      message: "User logged out successfully",
-    });
+    // res.status(200).json({
+    //   success: true,
+    //   message: "User logged out successfully",
+    // });
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, null, "User logged out successfully"));
   } catch (error) {
     console.error("Error logging out user:", error);
-    res.status(500).json({
-      error: "Error logging out user",
-    });
+    // res.status(500).json({
+    //   error: "Error logging out user",
+    // });
+    res.status(500).json(new ApiError(500, null, "Error logging out user"));
   }
 };
 
@@ -174,8 +199,9 @@ export const check = async (req, res) => {
     });
   } catch (error) {
     console.error("Error checking user:", error);
-    res.status(500).json({
-      error: "Error checking user",
-    });
+    // res.status(500).json({
+    //   error: "Error checking user",
+    // });
+    res.status(500).json(new ApiError(500, null, "Error checking user"));
   }
 };

@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const getAllListDetails = async (req, res) => {
   //   console.log(" 🔨 getAllListDetails controller Hit");
@@ -23,10 +24,13 @@ export const getAllListDetails = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching playlists : ", error);
-    return res.status(500).json({
-      success: false,
-      error: "Error while fetching playlists :: getAllListDetails",
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   error: "Error while fetching playlists :: getAllListDetails",
+    // });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while fetching playlists"));
   }
 };
 
@@ -50,7 +54,10 @@ export const getPlaylistDetails = async (req, res) => {
     });
 
     if (!playlist) {
-      return res.status(404).json({ error: "Playlist not found" });
+      // return res.status(404).json({ error: "Playlist not found" });
+      return res
+        .status(404)
+        .json(new ApiError(404, null, "Playlist not found"));
     }
 
     res.status(200).json({
@@ -60,10 +67,13 @@ export const getPlaylistDetails = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching a playlist : ", error);
-    return res.status(500).json({
-      success: false,
-      error: "Error while fetching a playlist :: getPlaylistDetails",
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   error: "Error while fetching a playlist :: getPlaylistDetails",
+    // });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while fetching a playlist"));
   }
 };
 
@@ -90,10 +100,13 @@ export const createPlaylist = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creatng playlist :", error);
-    return res.status(500).json({
-      success: false,
-      error: "Error while creating playlist :: createPlaylist",
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   error: "Error while creating playlist :: createPlaylist",
+    // });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while creating playlist"));
   }
 };
 
@@ -106,7 +119,10 @@ export const addProblemToPlaylist = async (req, res) => {
   try {
     // Ensure problemIds is an array
     if (!Array.isArray(problemIds) || problemIds.length === 0) {
-      return res.status(400).json({ error: "Invalid or missing problemIds" });
+      // return res.status(400).json({ error: "Invalid or missing problemIds" });
+      return res
+        .status(400)
+        .json(new ApiError(400, null, "Invalid problemIds"));
     }
 
     console.log(
@@ -131,7 +147,10 @@ export const addProblemToPlaylist = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding problems to playlist:", error.message);
-    res.status(500).json({ error: "Failed to add problems to playlist" });
+    // res.status(500).json({ error: "Failed to add problems to playlist" });
+    return res
+      .status(500)
+      .json(ApiError(500, null, "Failed to add problems to playlist"));
   }
 };
 
@@ -154,10 +173,14 @@ export const deletePlaylist = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleteing playlist : ", error);
-    return res.status(500).json({
-      success: false,
-      error: "Error while delete playlist :: deletePlaylist",
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   error: "Error while delete playlist :: deletePlaylist",
+    // });
+
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error deleting playlist"));
   }
 };
 
@@ -189,10 +212,13 @@ export const removeProblemFromPlaylist = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleteing problem from playlist : ", error);
-    return res.status(500).json({
-      success: false,
-      error:
-        "Error while delete problem from playlist :: removeProblemFromPlaylist",
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   error:
+    //     "Error while delete problem from playlist :: removeProblemFromPlaylist",
+    // });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error deleting problem from playlist"));
   }
 };

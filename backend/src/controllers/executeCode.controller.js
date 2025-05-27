@@ -4,6 +4,7 @@ import {
   pollBatchResult,
   submitBatch,
 } from "../libs/judge0.libs.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const executeCode = async (req, res) => {
   //   res.send("executeCode controller hit");
@@ -18,10 +19,14 @@ export const executeCode = async (req, res) => {
     !Array.isArray(expected_outputs) ||
     expected_outputs.length !== stdin.length
   ) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid or Missing test cases",
-    });
+    // return res.status(400).json({
+    //   success: false,
+    //   message: "Invalid or Missing test cases",
+    // });
+
+    return res
+      .status(400)
+      .json(new ApiError(400, null, "Invalid or Missing test cases"));
   }
   try {
     const submissions = stdin.map((input) => ({
@@ -41,12 +46,6 @@ export const executeCode = async (req, res) => {
       const stdout = result.stdout?.trim();
       const expected_output = expected_outputs[i]?.trim();
       const passed = stdout === expected_output;
-
-      // console.log(`Testcase #${i + 1} `);
-      // console.log(`Input: ${stdin[i]}`);
-      // console.log(`Expected Output: ${expected_output}`);
-      // console.log(`Actual Output: ${stdout}`);
-      // console.log(`Passed: ${passed}`);
 
       if (!passed) {
         allPassed = false;
@@ -141,9 +140,10 @@ export const executeCode = async (req, res) => {
     });
   } catch (error) {
     console.error("Error executing code:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error while executing code",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Error while executing code",
+    // });
+    res.status(500).json(new ApiError(500, null, "Error while executing code"));
   }
 };

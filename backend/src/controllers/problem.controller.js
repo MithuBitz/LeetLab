@@ -20,9 +20,18 @@ export const createProblem = async (req, res) => {
   } = req.body;
 
   if (req.user.role !== "ADMIN") {
+    // return res
+    //   .status(403)
+    //   .json({ message: "Unauthorized - Access denied you are not an admin" });
     return res
       .status(403)
-      .json({ message: "Unauthorized - Access denied you are not an admin" });
+      .json(
+        new ApiError(
+          403,
+          null,
+          "Unauthorized - Access denied you are not an admin"
+        )
+      );
   }
 
   try {
@@ -32,9 +41,13 @@ export const createProblem = async (req, res) => {
       const languageId = await getJudge0LanguageId(language);
 
       if (languageId == null) {
+        // return res
+        //   .status(400)
+        //   .json({ message: `Language ${language} not supported` });
+
         return res
           .status(400)
-          .json({ message: `Language ${language} not supported` });
+          .json(new ApiError(400, null, `Language ${language} not supported`));
       }
       //We have to create a submission for each testcase
       const submission = testcases.map(({ input, output }) => ({
@@ -64,9 +77,18 @@ export const createProblem = async (req, res) => {
         );
 
         if (result.status.id !== 3) {
-          return res.status(400).json({
-            error: `Testcase ${i + 1} failed for language ${language}`,
-          });
+          // return res.status(400).json({
+          //   error: `Testcase ${i + 1} failed for language ${language}`,
+          // });
+          return res
+            .status(400)
+            .json(
+              new ApiError(
+                400,
+                null,
+                `Testcase ${i + 1} failed for language ${language}`
+              )
+            );
         }
       }
       // Create and save a problem
@@ -93,7 +115,10 @@ export const createProblem = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Error creating problem" });
+    // return res.status(500).json({ error: "Error creating problem" });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error creating problem"));
   }
 };
 
@@ -113,7 +138,8 @@ export const getAllProblems = async (req, res) => {
 
     // If no problems found
     if (!problems || problems.length === 0) {
-      return res.status(404).json({ message: "No problems found" });
+      // return res.status(404).json({ message: "No problems found" });
+      return res.status(404).json(new ApiError(404, null, "No problems found"));
     }
     // Return the problems
     res.status(200).json({
@@ -123,7 +149,10 @@ export const getAllProblems = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Error while fetching problems" });
+    // return res.status(500).json({ message: "Error while fetching problems" });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while fetching problems"));
   }
 };
 
@@ -149,9 +178,12 @@ export const getProblemById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching problem:", error);
+    // return res
+    //   .status(500)
+    //   .json({ message: "Error while fetching problem by id" });
     return res
       .status(500)
-      .json({ message: "Error while fetching problem by id" });
+      .json(new ApiError(500, null, "Error fetching problem by ID"));
   }
 };
 
@@ -172,9 +204,18 @@ export const updateProblem = async (req, res) => {
   } = req.body;
 
   if (req.user.role !== "ADMIN") {
+    // return res
+    //   .status(403)
+    //   .json({ message: "Unauthorized - Access denied you are not an admin" });
     return res
       .status(403)
-      .json({ message: "Unauthorized - Access denied you are not an admin" });
+      .json(
+        new ApiError(
+          403,
+          null,
+          "Unauthorized - Access denied you are not an admin"
+        )
+      );
   }
 
   try {
@@ -185,7 +226,10 @@ export const updateProblem = async (req, res) => {
     });
 
     if (!existingProblem) {
-      return res.status(404).json({ message: "Problem not found to update" });
+      // return res.status(404).json({ message: "Problem not found to update" });
+      return res
+        .status(404)
+        .json(new ApiError(404, null, "Problem not found to update"));
     }
 
     const updatedProblem = await db.problem.update({
@@ -206,7 +250,10 @@ export const updateProblem = async (req, res) => {
     });
 
     if (!updatedProblem) {
-      return res.status(404).json({ message: "Update on problem failed" });
+      // return res.status(404).json({ message: "Update on problem failed" });
+      return res
+        .status(404)
+        .json(new ApiError(404, null, "Update on problem failed"));
     }
 
     res.status(201).json({
@@ -216,7 +263,10 @@ export const updateProblem = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating problem:", error);
-    return res.status(500).json({ message: "Error while updating problem" });
+    // return res.status(500).json({ message: "Error while updating problem" });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while updating problem"));
   }
 };
 
@@ -225,9 +275,18 @@ export const deleteProblem = async (req, res) => {
   const { id } = req.params;
 
   if (req.user.role !== "ADMIN") {
-    return res.status(403).json({
-      message: "Unauthorized to delete - Access denied you are not an admin",
-    });
+    // return res.status(403).json({
+    //   message: "Unauthorized to delete - Access denied you are not an admin",
+    // });
+    return res
+      .status(403)
+      .json(
+        new ApiError(
+          403,
+          null,
+          "Unauthorized to delete - Access denied you are not an admin"
+        )
+      );
   }
 
   try {
@@ -238,7 +297,10 @@ export const deleteProblem = async (req, res) => {
     });
 
     if (!deletedProblem) {
-      return res.status(404).json({ message: "Problem not found to delete" });
+      // return res.status(404).json({ message: "Problem not found to delete" });
+      return res
+        .status(404)
+        .json(new ApiError(404, null, "Problem not found to delete"));
     }
 
     res.status(200).json({
@@ -247,7 +309,10 @@ export const deleteProblem = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting problem:", error);
-    return res.status(500).json({ error: "Error while deleting problem" });
+    // return res.status(500).json({ error: "Error while deleting problem" });
+    return res
+      .status(500)
+      .json(new ApiError(500, null, "Error while deleting problem"));
   }
 };
 
@@ -278,8 +343,17 @@ export const getAllProblemSolvedByUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in getting problem solved by current user:", error);
+    // return res
+    //   .status(500)
+    //   .json({ error: "Error in getting problem solved by current user" });
     return res
       .status(500)
-      .json({ error: "Error in getting problem solved by current user" });
+      .json(
+        new ApiError(
+          500,
+          null,
+          "Error in getting problem solved by current user"
+        )
+      );
   }
 };
