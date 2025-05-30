@@ -5,6 +5,7 @@ import { UserRole } from "../generated/prisma/index.js";
 import { db } from "../libs/db.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
+import logger from "../../logger.js";
 
 export const registerUser = async (req, res) => {
   // res.send("Register controller hit");
@@ -93,7 +94,8 @@ export const registerUser = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.error("Error registering user:", error);
+    // console.error("Error registering user:", error);
+    logger.error("Error registering user:", error);
     // return res.status(500).json({
     //   message: "Unable to register user",
     //   success: false,
@@ -155,7 +157,8 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error creating user:", error);
+    // console.error("Error creating user:", error);
+    logger.error("Error logging in user:", error);
     // res.status(500).json({
     //   error: "Error logging in user",
     // });
@@ -181,7 +184,8 @@ export const logout = async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, null, "User logged out successfully"));
   } catch (error) {
-    console.error("Error logging out user:", error);
+    // console.error("Error logging out user:", error);
+    logger.error("Error logging out user:", error);
     // res.status(500).json({
     //   error: "Error logging out user",
     // });
@@ -198,7 +202,8 @@ export const check = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    console.error("Error checking user:", error);
+    // console.error("Error checking user:", error);
+    logger.error("Error checking user:", error);
     // res.status(500).json({
     //   error: "Error checking user",
     // });

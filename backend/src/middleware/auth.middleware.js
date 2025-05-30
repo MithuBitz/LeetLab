@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { db } from "../libs/db.js";
+import logger from "../../logger.js";
 
 export const authMiddleware = async (req, res, next) => {
   try {
@@ -41,7 +42,7 @@ export const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error("Error authenticating user:", error);
+    logger.error("Error authenticating user:", error);
     res.status(500).json({ message: "Error authenticating user" });
   }
 };
@@ -65,7 +66,7 @@ export const checkAdmin = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.error("Error in checking admin:", error);
+    logger.error("Error in checking admin:", error);
     res
       .status(500)
       .json({ message: "Error authenticating user :: checkAdmin" });

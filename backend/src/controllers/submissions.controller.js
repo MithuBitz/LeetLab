@@ -1,8 +1,8 @@
+import logger from "../../logger.js";
 import { db } from "../libs/db.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const getAllSubmissions = async (req, res) => {
-  //   console.log(" 🔨 Get All submission controller Hit");
   try {
     const userId = req.user.id;
     const submissions = await db.submission.findMany({
@@ -17,7 +17,7 @@ export const getAllSubmissions = async (req, res) => {
       submissions,
     });
   } catch (error) {
-    console.error("Error executing code:", error);
+    logger.error("Error executing code:", error);
     // res.status(500).json({
     //   success: false,
     //   error: "Error while executing code for geting submission",
@@ -35,8 +35,6 @@ export const getAllSubmissions = async (req, res) => {
 };
 
 export const getSubmissionById = async (req, res) => {
-  // console.log(" 🔨 Get submission by id controller Hit");
-
   const userId = req.user.id;
   const problemId = req.params.problemId;
 
@@ -54,7 +52,7 @@ export const getSubmissionById = async (req, res) => {
       submissions,
     });
   } catch (error) {
-    console.error("Error executing code:", error);
+    logger.error("Error executing code:", error);
     // res.status(500).json({
     //   success: false,
     //   error: "Error while executing code for geting submission by id",
@@ -72,8 +70,6 @@ export const getSubmissionById = async (req, res) => {
 };
 
 export const getSubmissionCountForProblem = async (req, res) => {
-  // console.log(" 🔨 getSubmissionCountForProblem controller Hit");
-
   const problemId = req.params.problemId;
 
   try {
@@ -89,7 +85,7 @@ export const getSubmissionCountForProblem = async (req, res) => {
       count: submission,
     });
   } catch (error) {
-    console.error("Error executing code:", error);
+    logger.error("Error executing code:", error);
     // res.status(500).json({
     //   success: false,
     //   error:

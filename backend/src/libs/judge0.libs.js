@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import logger from "../../logger.js";
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ export const submitBatch = async (submissions) => {
     }
   );
 
-  console.log("Sumission Data: ", data);
+  logger.info("Sumission Data: ", data);
   // Here data is basically in token object
   return data;
 };

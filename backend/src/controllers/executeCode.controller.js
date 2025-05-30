@@ -6,6 +6,8 @@ import {
 } from "../libs/judge0.libs.js";
 import { ApiError } from "../utils/ApiError.js";
 
+import logger from "../../logger.js";
+
 export const executeCode = async (req, res) => {
   //   res.send("executeCode controller hit");
   const { source_code, language_id, stdin, expected_outputs, problemId } =
@@ -38,8 +40,9 @@ export const executeCode = async (req, res) => {
     const submitResponse = await submitBatch(submissions);
     const tokens = submitResponse.map((resp) => resp.token);
     const results = await pollBatchResult(tokens);
-    console.log("#########Result########");
-    console.log(results);
+
+    // console.log(results);
+    logger.log("info", "Results: ", results);
 
     const allPassed = true;
     const detailResults = results.map((result, i) => {
@@ -65,6 +68,7 @@ export const executeCode = async (req, res) => {
     });
 
     // console.log("Detail Results #### ", detailResults);
+    logger.log("info", "Detail Results: ", detailResults);
 
     const submission = await db.submission.create({
       data: {
@@ -139,7 +143,8 @@ export const executeCode = async (req, res) => {
       submission: submissionWithTestCase,
     });
   } catch (error) {
-    console.error("Error executing code:", error);
+    // console.error("Error executing code:", error);
+    logger.error("Error executing code:", error);
     // res.status(500).json({
     //   success: false,
     //   message: "Error while executing code",

@@ -1,8 +1,8 @@
+import logger from "../../logger.js";
 import { db } from "../libs/db.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const getAllListDetails = async (req, res) => {
-  //   console.log(" 🔨 getAllListDetails controller Hit");
   try {
     const playlists = await db.playlist.findMany({
       where: {
@@ -23,7 +23,8 @@ export const getAllListDetails = async (req, res) => {
       playlists,
     });
   } catch (error) {
-    console.error("Error fetching playlists : ", error);
+    // console.error("Error fetching playlists : ", error);
+    logger.error("Error fetching playlists : ", error);
     // return res.status(500).json({
     //   success: false,
     //   error: "Error while fetching playlists :: getAllListDetails",
@@ -35,7 +36,6 @@ export const getAllListDetails = async (req, res) => {
 };
 
 export const getPlaylistDetails = async (req, res) => {
-  //   console.log(" 🔨 getPlaylistDetails controller Hit");
   const { playlistId } = req.params;
 
   try {
@@ -66,7 +66,8 @@ export const getPlaylistDetails = async (req, res) => {
       playlist,
     });
   } catch (error) {
-    console.error("Error fetching a playlist : ", error);
+    // console.error("Error fetching a playlist : ", error);
+    logger.error("Error fetching a playlist : ", error);
     // return res.status(500).json({
     //   success: false,
     //   error: "Error while fetching a playlist :: getPlaylistDetails",
@@ -78,13 +79,12 @@ export const getPlaylistDetails = async (req, res) => {
 };
 
 export const createPlaylist = async (req, res) => {
-  // console.log(" 🔨 createPlaylist controller Hit");
-
   try {
     const { name, description } = req.body;
     const userId = req.user.id;
 
-    console.log("UserID", userId);
+    // console.log("UserID", userId);
+    logger.info("UserID", userId);
     const playlist = await db.playlist.create({
       data: {
         name,
@@ -99,7 +99,8 @@ export const createPlaylist = async (req, res) => {
       playlist,
     });
   } catch (error) {
-    console.error("Error creatng playlist :", error);
+    // console.error("Error creatng playlist :", error);
+    logger.error("Error creatng playlist :", error);
     // return res.status(500).json({
     //   success: false,
     //   error: "Error while creating playlist :: createPlaylist",
@@ -114,7 +115,7 @@ export const addProblemToPlaylist = async (req, res) => {
   const { playlistId } = req.params;
   const { problemIds } = req.body; // Accept an array of problem IDs
 
-  console.log(req.params, req.body);
+  // logger.info(req.params, req.body);
 
   try {
     // Ensure problemIds is an array
@@ -125,12 +126,19 @@ export const addProblemToPlaylist = async (req, res) => {
         .json(new ApiError(400, null, "Invalid problemIds"));
     }
 
-    console.log(
-      problemIds.map((problemId) => ({
-        playlistId,
-        problemId,
-      }))
-    );
+    // console.log(
+    //   problemIds.map((problemId) => ({
+    //     playlistId,
+    //     problemId,
+    //   }))
+    // );
+
+    // logger.info(
+    //   problemIds.map((problemId) => ({
+    //     playlistId,
+    //     problemId,
+    //   }))
+    // );
 
     // Create records for each problem in the playlist
     const problemsInPlaylist = await db.problemInPlaylist.createMany({
@@ -146,7 +154,7 @@ export const addProblemToPlaylist = async (req, res) => {
       problemsInPlaylist,
     });
   } catch (error) {
-    console.error("Error adding problems to playlist:", error.message);
+    logger.error("Error adding problems to playlist:", error.message);
     // res.status(500).json({ error: "Failed to add problems to playlist" });
     return res
       .status(500)
@@ -155,7 +163,6 @@ export const addProblemToPlaylist = async (req, res) => {
 };
 
 export const deletePlaylist = async (req, res) => {
-  //   console.log(" 🔨 deletePlaylist controller Hit");
   const { playlistId } = req.params;
 
   try {
@@ -172,7 +179,7 @@ export const deletePlaylist = async (req, res) => {
       deletedPlaylist,
     });
   } catch (error) {
-    console.error("Error deleteing playlist : ", error);
+    logger.error("Error deleteing playlist : ", error);
     // return res.status(500).json({
     //   success: false,
     //   error: "Error while delete playlist :: deletePlaylist",
@@ -185,7 +192,6 @@ export const deletePlaylist = async (req, res) => {
 };
 
 export const removeProblemFromPlaylist = async (req, res) => {
-  //   console.log(" 🔨 removeProblemFromPlaylist controller Hit");
   const { playlistId } = req.params;
   const { problemIds } = req.body;
 
@@ -211,7 +217,7 @@ export const removeProblemFromPlaylist = async (req, res) => {
       deletedProblem,
     });
   } catch (error) {
-    console.error("Error deleteing problem from playlist : ", error);
+    logger.error("Error deleteing problem from playlist : ", error);
     // return res.status(500).json({
     //   success: false,
     //   error:

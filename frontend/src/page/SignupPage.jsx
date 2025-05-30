@@ -17,7 +17,7 @@ const SignupSchema = z.object({
 });
 
 const SignupPage = () => {
-  const { signup, isSigninUp } = useAuthStore;
+  const { signup, isSigninUp } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -26,9 +26,11 @@ const SignupPage = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(SignupSchema),
-  }); 
+  });
 
   const onSubmit = async (data) => {
+    console.log("Onsubmit hit");
+
     console.log(data);
     try {
       await signup(data);

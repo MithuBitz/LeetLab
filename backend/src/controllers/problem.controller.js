@@ -1,3 +1,4 @@
+import logger from "../../logger.js";
 import { db } from "../libs/db.js";
 import {
   getJudge0LanguageId,
@@ -6,7 +7,6 @@ import {
 } from "../libs/judge0.libs.js";
 
 export const createProblem = async (req, res) => {
-  // res.send("Problem controller hit");
   const {
     title,
     description,
@@ -66,9 +66,9 @@ export const createProblem = async (req, res) => {
 
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
-        console.log("Result : ", result);
-        // console.log(result);
-        console.log(
+        logger.info("Result : ", result);
+
+        logger.info(
           `Testcase ${
             i + 1
           } and Language ${language} ----- result ${JSON.stringify(
@@ -114,7 +114,7 @@ export const createProblem = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    logger.info(error);
     // return res.status(500).json({ error: "Error creating problem" });
     return res
       .status(500)
@@ -123,7 +123,6 @@ export const createProblem = async (req, res) => {
 };
 
 export const getAllProblems = async (req, res) => {
-  // res.send("Get all problems controller hit");
   try {
     // Fetch all problems from db
     const problems = await db.problem.findMany({
@@ -148,7 +147,7 @@ export const getAllProblems = async (req, res) => {
       problems,
     });
   } catch (error) {
-    console.log(error);
+    logger.error("Error while fetching problems");
     // return res.status(500).json({ message: "Error while fetching problems" });
     return res
       .status(500)
@@ -177,7 +176,7 @@ export const getProblemById = async (req, res) => {
       problem,
     });
   } catch (error) {
-    console.error("Error fetching problem:", error);
+    logger.error("Error fetching problem by ID", error);
     // return res
     //   .status(500)
     //   .json({ message: "Error while fetching problem by id" });
@@ -188,8 +187,6 @@ export const getProblemById = async (req, res) => {
 };
 
 export const updateProblem = async (req, res) => {
-  // res.send("updateProblem controller hit");
-
   const { id } = req.params;
   const {
     title,
@@ -262,7 +259,7 @@ export const updateProblem = async (req, res) => {
       problem: updatedProblem,
     });
   } catch (error) {
-    console.error("Error updating problem:", error);
+    logger.error("Error updating problem:", error);
     // return res.status(500).json({ message: "Error while updating problem" });
     return res
       .status(500)
@@ -308,7 +305,7 @@ export const deleteProblem = async (req, res) => {
       message: "Problem deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting problem:", error);
+    logger.error("Error deleting problem:", error);
     // return res.status(500).json({ error: "Error while deleting problem" });
     return res
       .status(500)
@@ -342,7 +339,7 @@ export const getAllProblemSolvedByUser = async (req, res) => {
       problems,
     });
   } catch (error) {
-    console.error("Error in getting problem solved by current user:", error);
+    logger.error("Error in getting problem solved by current user:", error);
     // return res
     //   .status(500)
     //   .json({ error: "Error in getting problem solved by current user" });
